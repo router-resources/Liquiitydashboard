@@ -139,7 +139,7 @@ function App() {
       const res_gate2= await axios('https://cexdepth.onrender.com/gatedata?token=route')
       const res_gate3=await axios('https://proxy-j1k6.onrender.com/gatedata?token=dfyn');
       const res_gate4= await axios('https://cexdepth.onrender.com/gatedata?token=dfyn')
-      console.log(res_kukoin1.data)
+      console.log(res_kukoin2.data)
     
      console.log(res_kukoin1.data)
      setTV_KUKOIN_ROUTE( res_kukoin1.data.data.volValue)
