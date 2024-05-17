@@ -10,17 +10,29 @@ import logo from './Assets/logo.png'
 import './App.css'
 function App() {
 
-  const [TV_KUKOIN,setTV_KUKOIN]=useState('')
-  const [SPREAD_KUKOIN,setSPREAD_KUKOIN]=useState(20)
-  const [DEPTH_KUKOIN,setDEPTH_KUKOIN]=useState({})
+  const [token,setToken]=useState('route')
+  const [token_button_color,setToken_button_color]=useState('pink')
+  const [token_button_color1,setToken_button_color1]=useState('silver')
+  const [TV_KUKOIN_ROUTE,setTV_KUKOIN_ROUTE]=useState('')
+  const [SPREAD_KUKOIN_ROUTE,setSPREAD_KUKOIN_ROUTE]=useState(20)
+  const [DEPTH_KUKOIN_ROUTE,setDEPTH_KUKOIN_ROUTE]=useState({})
+  const [TV_KUKOIN_DFYN,setTV_KUKOIN_DFYN]=useState('')
+  const [SPREAD_KUKOIN_DFYN,setSPREAD_KUKOIN_DFYN]=useState(20)
+  const [DEPTH_KUKOIN_DFYN,setDEPTH_KUKOIN_DFYN]=useState({})
   const [TV_BYBIT,setTV_BYBIT]=useState(20)
   const [SPREAD_BYBIT,setSPREAD_BYBIT]=useState(20)
-  const [TV_MEXC,setTV_MEXC]=useState(20)
-  const [SPREAD_MEXC,setSPREAD_MEXC]=useState(20)
-  const [DEPTH_MEXC,setDEPTH_MEXC]=useState({})
-  const [TV_GATE,setTV_GATE]=useState(20)
-  const [SPREAD_GATE,setSPREAD_GATE]=useState(20)
-  const [DEPTH_GATE,setDEPTH_GATE]=useState({})
+  const [TV_MEXC_ROUTE,setTV_MEXC_ROUTE]=useState(20)
+  const [SPREAD_MEXC_ROUTE,setSPREAD_MEXC_ROUTE]=useState(20)
+  const [DEPTH_MEXC_ROUTE,setDEPTH_MEXC_ROUTE]=useState({})
+  const [TV_MEXC_DFYN,setTV_MEXC_DFYN]=useState(20)
+  const [SPREAD_MEXC_DFYN,setSPREAD_MEXC_DFYN]=useState(20)
+  const [DEPTH_MEXC_DFYN,setDEPTH_MEXC_DFYN]=useState({})
+  const [TV_GATE_ROUTE,setTV_GATE_ROUTE]=useState(20)
+  const [SPREAD_GATE_ROUTE,setSPREAD_GATE_ROUTE]=useState(20)
+  const [DEPTH_GATE_ROUTE,setDEPTH_GATE_ROUTE]=useState({})
+  const [TV_GATE_DFYN,setTV_GATE_DFYN]=useState(20)
+  const [SPREAD_GATE_DFYN,setSPREAD_GATE_DFYN]=useState(20)
+  const [DEPTH_GATE_DFYN,setDEPTH_GATE_DFYN]=useState({})
   const [TV_ASD,setTV_ASD]=useState(20)
   const [SPREAD_ASD,setSPREAD_ASD]=useState(20)
   const [DEPTH_ASD,setDEPTH_ASD]=useState({})
@@ -30,7 +42,7 @@ function App() {
 
 
     
-  const [TV_DATA,setTV_DATA] = useState([
+  const [TV_DATA_ROUTE,setTV_DATA_ROUTE] = useState([
       ["CEX", "24h Trading Volume", { role: "style" }],
       ["Kucoin", 8.94, "#b87333"], // RGB value
       ["MEXC", 10.49, "silver"], // English color name
@@ -39,7 +51,7 @@ function App() {
       ["ASCENDEX", 21.45, "green"],
     ]);
 
-    const [SPREAD_DATA,setSPREAD_DATA] = useState([
+    const [SPREAD_DATA_ROUTE,setSPREAD_DATA_ROUTE] = useState([
       ["CEX", "24h Trading Volume", { role: "style" }],
       ["Kucoin", 8.94, "#b87333"], // RGB value
       ["MEXC", 10.49, "silver"], // English color name
@@ -47,7 +59,7 @@ function App() {
       ["GATE", 21.45, "color: #e5e4e2"], // CSS-style declaration
       ["ASCENDEX", 21.45, "green"],
     ]);
-    const [DEPTH_DATA,setDEPTH_DATA] = useState([
+    const [DEPTH_DATA_ROUTE,setDEPTH_DATA_ROUTE] = useState([
       [
         "Depth",
         "Kucoin",
@@ -59,6 +71,37 @@ function App() {
       [0.3, 37.8, 80.8, 41.8,0,0],
       [0.5, 30.9, 69.5, 32.4,0,0],
       [1, 25.4, 57, 25.7,0,0],
+      
+    ]);
+
+    const [TV_DATA_DFYN,setTV_DATA_DFYN] = useState([
+      ["CEX", "24h Trading Volume", { role: "style" }],
+      ["Kucoin", 8.94, "#b87333"], // RGB value
+      ["MEXC", 10.49, "silver"], // English color name
+    
+      ["GATE", 21.45, "color: #e5e4e2"] // CSS-style declaration
+     
+    ]);
+
+    const [SPREAD_DATA_DFYN,setSPREAD_DATA_DFYN] = useState([
+      ["CEX", "24h Trading Volume", { role: "style" }],
+      ["Kucoin", 8.94, "#b87333"], // RGB value
+      ["MEXC", 10.49, "silver"], // English color name
+      ["GATE", 21.45, "color: #e5e4e2"] // CSS-style declaration
+  
+    ]);
+    const [DEPTH_DATA_DFYN,setDEPTH_DATA_DFYN] = useState([
+      [
+        "Depth",
+        "Kucoin",
+        "MEXC",
+       
+        "GATE"
+       
+      ],
+      [0.3, 37.8, 80.8, 41.8],
+      [0.5, 30.9, 69.5, 32.4],
+      [1, 25.4, 57, 25.7,0],
       
     ]);
     
@@ -80,35 +123,42 @@ function App() {
       
 
      
-      const res_kukoin1 = await axios('https://proxy-j1k6.onrender.com/kucoindata')
-      const res_kukoin2= await axios('https://cexdepth.onrender.com/kucoindata')
-      const res_mexc1=await axios('https://proxy-j1k6.onrender.com/mexcdata');
-      const res_mexc2= await axios('https://cexdepth.onrender.com/mexcdata')
+      const res_kukoin1 = await axios('https://proxy-j1k6.onrender.com/kucoindata?token=route')
+      const res_kukoin2= await axios('https://cexdepth.onrender.com/kucoindata?token=route')
+      const res_kukoin3 = await axios('https://proxy-j1k6.onrender.com/kucoindata?token=dfyn')
+      const res_kukoin4= await axios('https://cexdepth.onrender.com/kucoindata?token=dfyn')
+      const res_mexc1=await axios('https://proxy-j1k6.onrender.com/mexcdata?token=route');
+      const res_mexc2= await axios('https://cexdepth.onrender.com/mexcdata?token=route')
+      const res_mexc3=await axios('https://proxy-j1k6.onrender.com/mexcdata?token=dfyn');
+      const res_mexc4= await axios('https://cexdepth.onrender.com/mexcdata?token=dfyn')
       const res_htx1=await axios('https://proxy-j1k6.onrender.com/htxdata');
       const res_htx2= await axios('https://cexdepth.onrender.com/htxdata')
       const res_asd1=await axios('https://proxy-j1k6.onrender.com/asddata');
       const res_asd2= await axios('https://cexdepth.onrender.com/asddata')
-      const res_gate1=await axios('https://proxy-j1k6.onrender.com/gatedata');
-      const res_gate2= await axios('https://cexdepth.onrender.com/gatedata')
+      const res_gate1=await axios('https://proxy-j1k6.onrender.com/gatedata?token=route');
+      const res_gate2= await axios('https://cexdepth.onrender.com/gatedata?token=route')
+      const res_gate3=await axios('https://proxy-j1k6.onrender.com/gatedata?token=dfyn');
+      const res_gate4= await axios('https://cexdepth.onrender.com/gatedata?token=dfyn')
       console.log(res_kukoin1.data)
     
      console.log(res_kukoin1.data)
-     setTV_KUKOIN( res_kukoin1.data.data.volValue)
-      setSPREAD_KUKOIN(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy)
-      setDEPTH_KUKOIN(res_kukoin2.data)
-      setTV_MEXC(res_mexc1.data.volume);
-      setSPREAD_MEXC(res_mexc1.data.askPrice-res_mexc1.data.bidPrice)
-      setDEPTH_MEXC(res_mexc2.data)
+     setTV_KUKOIN_ROUTE( res_kukoin1.data.data.volValue)
+      setSPREAD_KUKOIN_ROUTE(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy)
+      setDEPTH_KUKOIN_ROUTE(res_kukoin2.data)
+      setTV_MEXC_ROUTE(res_mexc1.data.volume);
+      setSPREAD_MEXC_ROUTE(res_mexc1.data.askPrice-res_mexc1.data.bidPrice)
+      setDEPTH_MEXC_ROUTE(res_mexc2.data)
       setTV_HTX(res_htx1.data.tick.vol);
       setSPREAD_HTX(res_kukoin1.data.data.volValue)
       setDEPTH_HTX(res_htx2.data)
-      setTV_GATE(res_gate1.data[0].quote_volume);
-      setSPREAD_GATE(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid)
-      setDEPTH_GATE(res_gate2.data)
+      setTV_GATE_ROUTE(res_gate1.data[0].quote_volume);
+      setSPREAD_GATE_ROUTE(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid)
+      setDEPTH_GATE_ROUTE(res_gate2.data)
       setTV_ASD(res_asd1.data.data.volume);
       setSPREAD_ASD(res_asd1.data.data.ask[0]-res_asd1.data.data.bid[0])
       setDEPTH_ASD(res_asd2.data)
-      setTV_DATA([
+
+      setTV_DATA_ROUTE([
             ["CEX", "24h Trading Volume", { role: "style" }],
             ["Kucoin",parseFloat(res_kukoin1.data.data.volValue) , "#b87333"], // RGB value
             ["MEXC",parseFloat(res_mexc1.data.volume), "silver"], // English color name
@@ -116,14 +166,14 @@ function App() {
             ["GATE",parseFloat(res_gate1.data[0].quote_volume), "color: #e5e4e2"], // CSS-style declaration
             ["ASCENDEX", parseFloat(res_asd1.data.data.volume), "green"],
           ])
-      setSPREAD_DATA([
+      setSPREAD_DATA_ROUTE([
             ["CEX", "Spread", { role: "style" }],
             ["Kucoin",parseFloat(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy) , "#b87333"], // RGB value
             ["MEXC",parseFloat(res_mexc1.data.askPrice-res_mexc1.data.bidPrice), "silver"], // English color name
             ["GATE",parseFloat(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid), "color: #e5e4e2"], // CSS-style declaration
             ["ASCENDEX", parseFloat(res_asd1.data.data.ask[0]-res_asd1.data.data.bid[0]), "green"],
           ])
-      setDEPTH_DATA([
+      setDEPTH_DATA_ROUTE([
             [
               "Depth",
               "Kucoin",
@@ -137,6 +187,44 @@ function App() {
             [1, res_kukoin2.data["1%"],res_mexc2.data["1%"], res_htx2.data["1%"],res_gate2.data["1%"],res_asd2.data["1%"]],
             
           ])
+
+          setTV_DATA_DFYN([
+            ["CEX", "24h Trading Volume", { role: "style" }],
+            ["Kucoin",parseFloat(res_kukoin3.data.data.volValue) , "#b87333"], // RGB value
+            ["MEXC",parseFloat(res_mexc3.data.volume), "silver"], // English color name
+            ["GATE",parseFloat(res_gate3.data[0].quote_volume), "color: #e5e4e2"] // CSS-style declaration
+            
+          ])
+      setSPREAD_DATA_DFYN([
+            ["CEX", "Spread", { role: "style" }],
+            ["Kucoin",parseFloat(res_kukoin3.data.data.sell-res_kukoin3.data.data.buy) , "#b87333"], // RGB value
+            ["MEXC",parseFloat(res_mexc3.data.askPrice-res_mexc3.data.bidPrice), "silver"], // English color name
+            ["GATE",parseFloat(res_gate3.data[0].lowest_ask-res_gate3.data[0].highest_bid), "color: #e5e4e2"] // CSS-style declaration
+            
+          ])
+      setDEPTH_DATA_DFYN([
+            [
+              "Depth",
+              "Kucoin",
+              "MEXC",
+              "GATE"
+              
+            ],
+            [0.3,res_kukoin4.data["0.3%"],res_mexc2.data["0.3%"],res_gate2.data["0.3%"]],
+            [0.5,res_kukoin4.data["0.5%"],res_mexc4.data["0.5%"],res_gate4.data["0.5%"]],
+            [1, res_kukoin4.data["1%"],res_mexc4.data["1%"],res_gate4.data["1%"]]
+            
+          ])
+
+          setTV_KUKOIN_DFYN( res_kukoin3.data.data.volValue)
+          setSPREAD_KUKOIN_DFYN(res_kukoin3.data.data.sell-res_kukoin3.data.data.buy)
+          setDEPTH_KUKOIN_DFYN(res_kukoin4.data)
+          setTV_MEXC_DFYN(res_mexc3.data.volume);
+          setSPREAD_MEXC_DFYN(res_mexc3.data.askPrice-res_mexc3.data.bidPrice)
+          setDEPTH_MEXC_DFYN(res_mexc4.data)
+          setTV_GATE_DFYN(res_gate3.data[0].quote_volume);
+          setSPREAD_GATE_DFYN(res_gate3.data[0].lowest_ask-res_gate3.data[0].highest_bid)
+          setDEPTH_GATE_DFYN(res_gate4.data)
       // const res_bybit1=await axios('https://proxy-j1k6.onrender.com/exchange?exchangeName=bybit');
       // setTV_BYBIT( res_bybit.data.data.volValue)
       // setSPREAD_BYBIT(res_kukoin1.data.data.volValue)
@@ -149,156 +237,292 @@ function App() {
   return (
     <div>
 
-      {SPREAD_MEXC!=20? <center>
-
-
-<br></br>
-<div class="nav"><img src={logo} style={{width:"5em",height:'5em'}}></img>
+      {SPREAD_MEXC_ROUTE!=20? <center>
+        <br></br>
+        <div class="nav"><img src={logo} style={{width:"5em",height:'5em'}}></img>
 &nbsp;
 
 <h1>Liquidity Dashboard</h1></div>
 <br></br>
 <hr></hr>
 <br></br>
-<h2>Trading Volume</h2>
-<br></br>
+          <button style={{backgroundColor:token_button_color}} onClick={()=>{
+            setToken("route")
+            setToken_button_color('pink')
+            setToken_button_color1('silver')
+          }}>ROUTE</button> <button style={{backgroundColor:token_button_color1}} onClick={()=>{
+            setToken("dfyn")
+            setToken_button_color1('pink')
+            setToken_button_color('silver')
+          }}>DFYN</button>
+        {token=="route"?<div>
+          
+                    <h2>Trading Volume</h2>
+            <br></br>
 
-<Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA} options={options} />
-<table  style={{ border: '1px solid black' }}>
-      <tr>
-<th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
-<th style={{borderBottom: '1px solid black'}}>24h Volume</th>
-</tr>
-<tr>
-      <th style={{ borderRight: '1px solid black' }}>ASCENDEX</th>
-      <td>{TV_ASD}</td>
-      
-      </tr>
-      
-<tr>
-      <th style={{ borderRight: '1px solid black' }}> Kucoin</th>
-      <td>{TV_KUKOIN}</td>
-</tr>
-<tr>
-      <th style={{ borderRight: '1px solid black' }}>MEXC</th>
-      <td>{TV_MEXC}</td>
-      
-      </tr>
-      <tr>
-      <th style={{ borderRight: '1px solid black' }}>GATE</th>
-      <td>{TV_GATE}</td>
-      
-      </tr>
-      <tr>
-      <th style={{ borderRight: '1px solid black' }}>HTX</th>
-      <td>{TV_HTX}</td>
-      </tr>
-     
-      
-</table>
-<br></br>
-<hr></hr>
+            <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_ROUTE} options={options} />
+            <table  style={{ border: '1px solid black' }}>
+                  <tr>
+            <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
+            <th style={{borderBottom: '1px solid black'}}>24h Volume</th>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>ASCENDEX</th>
+                  <td>{TV_ASD}</td>
+                  
+                  </tr>
+                  
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}> Kucoin</th>
+                  <td>{TV_KUKOIN_ROUTE}</td>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>MEXC</th>
+                  <td>{TV_MEXC_ROUTE}</td>
+                  
+                  </tr>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black' }}>GATE</th>
+                  <td>{TV_GATE_ROUTE}</td>
+                  
+                  </tr>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black' }}>HTX</th>
+                  <td>{TV_HTX}</td>
+                  </tr>
+                
+                  
+            </table>
+            <br></br>
+            <hr></hr>
 
 
-<h2>Spread</h2>
+            <h2>Spread</h2>
 
-<br></br>
-<Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA} options={options} />
-<table style={{ border: '1px solid black' }}>
-      <tr>
-      <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
-<th style={{borderBottom: '1px solid black'}}>Spread</th>
-</tr>
-<tr>
-      <th style={{ borderRight: '1px solid black' }}>ASCENDEX</th>
-      <td>{SPREAD_ASD}</td>
-      
-      </tr>
-      
-<tr>
-      <th style={{ borderRight: '1px solid black' }}>Kucoin</th>
-      <td>{SPREAD_KUKOIN}</td>
-</tr>
-<tr>
-      <th style={{ borderRight: '1px solid black' }}>MEXC</th>
-      <td>{SPREAD_MEXC}</td>
-      
-      </tr>
-      <tr>
-      <th style={{ borderRight: '1px solid black' }}>GATE</th>
-      <td>{SPREAD_GATE}</td>
-      
-      </tr>
-     
-     
-      
-</table>
-<br></br>
+            <br></br>
+            <Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_ROUTE} options={options} />
+            <table style={{ border: '1px solid black' }}>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
+            <th style={{borderBottom: '1px solid black'}}>Spread</th>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>ASCENDEX</th>
+                  <td>{SPREAD_ASD}</td>
+                  
+                  </tr>
+                  
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>Kucoin</th>
+                  <td>{SPREAD_KUKOIN_ROUTE}</td>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>MEXC</th>
+                  <td>{SPREAD_MEXC_ROUTE}</td>
+                  
+                  </tr>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black' }}>GATE</th>
+                  <td>{SPREAD_GATE_ROUTE}</td>
+                  
+                  </tr>
+                
+                
+                  
+            </table>
+            <br></br>
 
-<hr></hr>
+            <hr></hr>
 
-<h2>Depth</h2>
+            <h2>Depth</h2>
 
-<Chart
-      chartType="Line"
-      width="100%"
-      height="400px"
-      data={DEPTH_DATA}
-      options={options}
-    />
-    <br></br>
+            <Chart
+                  chartType="Line"
+                  width="100%"
+                  height="400px"
+                  data={DEPTH_DATA_ROUTE}
+                  options={options}
+                />
+                <br></br>
 
-    <table>
+                <table>
 
-      <tr>
-      <th>%</th>
-      <th>Depth</th>
+                  <tr>
+                  <th>%</th>
+                  <th>Depth</th>
 
-      </tr>
+                  </tr>
 
-    </table>
+                </table>
 
-<br></br>
-<table style={{ border: '1px solid black' }}>
-      <tr>  <th style={{ borderRight: '1px solid black' }}>%</th>
-      
-      <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Kucoin</th>
-      <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black' }}>MEXC</th>
-      <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black'}}>HTX</th>
-      <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>ASCENDEX</th>
-      <th style={{borderBottom: '1px solid black'}}>GATE</th>
-      
-      </tr>
-    
-<tr>
-<td style={{ borderRight: '1px solid black' }}> 0.3%</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN["0.3%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC["0.3%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.3%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.3%"]}</td>
-<td>{DEPTH_GATE["0.3%"]}</td>
-</tr>
-<tr>
-<td style={{ borderRight: '1px solid black' }}>0.5%</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN["0.5%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC["0.5%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.5%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.5%"]}</td>
-<td >{DEPTH_GATE["0.5%"]}</td>
+            <br></br>
+            <table style={{ border: '1px solid black' }}>
+                  <tr>  <th style={{ borderRight: '1px solid black' }}>%</th>
+                  
+                  <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Kucoin</th>
+                  <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black' }}>MEXC</th>
+                  <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black'}}>HTX</th>
+                  <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>ASCENDEX</th>
+                  <th style={{borderBottom: '1px solid black'}}>GATE</th>
+                  
+                  </tr>
+                
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.3%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.3%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.3%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.3%"]}</td>
+            <td>{DEPTH_GATE_ROUTE["0.3%"]}</td>
+            </tr>
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}>0.5%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.5%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.5%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.5%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.5%"]}</td>
+            <td >{DEPTH_GATE_ROUTE["0.5%"]}</td>
 
-</tr>
-<tr>
-<td style={{ borderRight: '1px solid black' }}>1%</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN["1%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC["1%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["1%"]}</td>
-<td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["1"]}</td>
-<td>{DEPTH_GATE["0.5%"]}</td>
+            </tr>
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}>1%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["1%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["1%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["1%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["1"]}</td>
+            <td>{DEPTH_GATE_ROUTE["0.5%"]}</td>
 
-</tr>
-</table>
+            </tr>
+            </table>
 
-<br></br><br></br><br></br><br></br><br></br>
+            <br></br><br></br><br></br><br></br><br></br>
+
+        </div>:<div>
+          
+        <h2>Trading Volume</h2>
+            <br></br>
+
+            <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_DFYN} options={options} />
+            <table  style={{ border: '1px solid black' }}>
+                  <tr>
+            <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
+            <th style={{borderBottom: '1px solid black'}}>24h Volume</th>
+            </tr>
+           
+                  
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}> Kucoin</th>
+                  <td>{TV_KUKOIN_DFYN}</td>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>MEXC</th>
+                  <td>{TV_MEXC_DFYN}</td>
+                  
+                  </tr>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black' }}>GATE</th>
+                  <td>{TV_GATE_DFYN}</td>
+                  
+                  </tr>
+                 
+                
+                  
+            </table>
+            <br></br>
+            <hr></hr>
+
+
+            <h2>Spread</h2>
+
+            <br></br>
+            <Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_DFYN} options={options} />
+            <table style={{ border: '1px solid black' }}>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>CEX</th>
+            <th style={{borderBottom: '1px solid black'}}>Spread</th>
+            </tr>
+           
+                  
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>Kucoin</th>
+                  <td>{SPREAD_KUKOIN_DFYN}</td>
+            </tr>
+            <tr>
+                  <th style={{ borderRight: '1px solid black' }}>MEXC</th>
+                  <td>{SPREAD_MEXC_DFYN}</td>
+                  
+                  </tr>
+                  <tr>
+                  <th style={{ borderRight: '1px solid black' }}>GATE</th>
+                  <td>{SPREAD_GATE_DFYN}</td>
+                  
+                  </tr>
+                
+                
+                  
+            </table>
+            <br></br>
+
+            <hr></hr>
+
+            <h2>Depth</h2>
+
+            <Chart
+                  chartType="Line"
+                  width="100%"
+                  height="400px"
+                  data={DEPTH_DATA_DFYN}
+                  options={options}
+                />
+                <br></br>
+
+                <table>
+
+                  <tr>
+                  <th>%</th>
+                  <th>Depth</th>
+
+                  </tr>
+
+                </table>
+
+            <br></br>
+            <table style={{ border: '1px solid black' }}>
+                  <tr>  <th style={{ borderRight: '1px solid black' }}>%</th>
+                  
+                  <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Kucoin</th>
+                  <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black' }}>MEXC</th>
+                  <th style={{borderBottom: '1px solid black'}}>GATE</th>
+                  
+                  </tr>
+                
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.3%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.3%"]}</td>
+            <td>{DEPTH_GATE_DFYN["0.3%"]}</td>
+            </tr>
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}>0.5%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.5%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.5%"]}</td>
+            <td >{DEPTH_GATE_DFYN["0.5%"]}</td>
+
+            </tr>
+            <tr>
+            <td style={{ borderRight: '1px solid black' }}>1%</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["1%"]}</td>
+            <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["1%"]}</td>
+            <td>{DEPTH_GATE_DFYN["0.5%"]}</td>
+
+            </tr>
+            </table>
+
+            <br></br><br></br><br></br><br></br><br></br>
+          </div>}
+
+
+
 
 
 
