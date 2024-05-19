@@ -43,3 +43,9 @@
   display: flex;
   justify-content: center;
 }
+
+.navitem{
+  display: flex;
+  justify-content:center
+
+}
