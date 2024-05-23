@@ -70,6 +70,14 @@ function CH({token}) {
       "id": "0FJCJkGvysv89INTupQh"
     }])
 
+    const [TV_DATA_BYBIT,setTV_DATA_BYBIT] = useState([
+      ["CEX", "24h Trading Volume", { role: "style" }],
+      ["19 May 2024", 8.94, "#b87333"], // RGB value
+      ["19 May 2024", 10.49, "silver"], // English color name,
+      ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+      ["19 May 2024", 21.45, "green"],
+    ])
+
       const [TV_DATA_KUCOIN,setTV_DATA_KUCOIN] = useState([
         ["CEX", "24h Trading Volume", { role: "style" }],
         ["19 May 2024", 8.94, "#b87333"], // RGB value
@@ -99,6 +107,14 @@ function CH({token}) {
         ["19 May 2024", 21.45, "green"],
       ]);
 
+      const [SPREAD_DATA_BYBIT,setSPREAD_DATA_BYBIT] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+
       const [SPREAD_DATA_KUCOIN,setSPREAD_DATA_KUCOIN] = useState([
         ["CEX", "24h Trading Volume", { role: "style" }],
         ["19 May 2024", 8.94, "#b87333"], // RGB value
@@ -127,6 +143,17 @@ function CH({token}) {
         ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
         ["19 May 2024", 21.45, "green"],
       ]);
+
+      const [DEPTH_DATA_BYBIT,setDEPTH_DATA_BYBIT] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
+
 
       const [DEPTH_DATA_KUCOIN,setDEPTH_DATA_KUCOIN] =useState([[
         "Day",
@@ -174,7 +201,7 @@ function CH({token}) {
 
     useEffect(() => {
       const fetchData = async () => {
-        const dataFromFireBase = await axios('https://proxy-j1k6.onrender.com/read');
+        const dataFromFireBase = await axios('http://34.93.140.12:8000/read');
         const dataFromFireBase1 = dataFromFireBase.data.map(item => ({
           time: item.time,
           volume: item.exchange.map(ex => parseFloat(ex.volume)),
@@ -251,38 +278,44 @@ function CH({token}) {
           return result;
         };
 
+        const Bybit_data_volume=createVolumeDataArray("Bybit")
         const Kucoin_data_volume = createVolumeDataArray("Kucoin");
         const Mexc_data_volume = createVolumeDataArray("Mexc");
         const Ascendex_data_volume = createVolumeDataArray("Ascendex");
         const Gate_data_volume = createVolumeDataArray("Gate");
 
+        const Bybit_data_spread=createSpreadDataArray("Bybit")
         const Kucoin_data_spread = createSpreadDataArray("Kucoin");
         const Mexc_data_spread = createSpreadDataArray("Mexc");
         const Ascendex_data_spread = createSpreadDataArray("Ascendex");
         const Gate_data_spread = createSpreadDataArray("Gate");
 
+        const Bybit_data_depth=createDepthDataArray("Bybit")
         const Kucoin_data_depth = createDepthDataArray("Kucoin");
         const Mexc_data_depth = createDepthDataArray("Mexc");
         const Ascendex_data_depth = createDepthDataArray("Ascendex");
         const Gate_data_depth = createDepthDataArray("Gate");
 
+        setTV_DATA_BYBIT(Bybit_data_volume)
         setTV_DATA_KUCOIN(Kucoin_data_volume)
         setTV_DATA_MEXC(Mexc_data_volume)
         setTV_DATA_ASD(Ascendex_data_volume)
         setTV_DATA_GATE(Gate_data_volume)
 
+        setSPREAD_DATA_BYBIT(Bybit_data_spread)
         setSPREAD_DATA_KUCOIN(Kucoin_data_spread)
         setSPREAD_DATA_MEXC(Mexc_data_spread)
         setSPREAD_DATA_ASD(Ascendex_data_spread)
         setSPREAD_DATA_GATE(Gate_data_spread)
 
+        setDEPTH_DATA_BYBIT(Bybit_data_depth)
         setDEPTH_DATA_KUCOIN(Kucoin_data_depth)
         setDEPTH_DATA_MEXC(Mexc_data_depth)
         setDEPTH_DATA_ASD(Ascendex_data_depth)
         setDEPTH_DATA_GATE(Gate_data_depth)
 
        
-        
+        console.log('Bybit_data_depth:', Bybit_data_depth);
         console.log('Kucoin_data_depth:', Kucoin_data_depth);
         console.log('Mexc_data_depth:', Mexc_data_depth);
         console.log('Ascendex_data_depth:', Ascendex_data_depth);
@@ -301,7 +334,7 @@ function CH({token}) {
         
 
         const fetchData=async ()=>{
-            const dataFromFireBase = await axios('https://proxy-j1k6.onrender.com/read')
+            const dataFromFireBase = await axios('http://34.93.140.12:8000/read')
             const dataFromFireBase1=dataFromFireBase.data.map(item => ({
                 time: item.time,
                 volume: item.exchange.map(ex => parseFloat(ex.volume)),
@@ -360,6 +393,11 @@ function CH({token}) {
 
 {parameter=="VOLUME" && <div>
 
+
+<Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_BYBIT} options={options} />
+<b>BYBIT</b>
+                <hr></hr>
+
 <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_KUCOIN} options={options} />
 <b>KUCOIN</b>
                 <hr></hr>
@@ -384,6 +422,11 @@ function CH({token}) {
 </div>}
 
 {parameter=="SPREAD" && <div>
+
+<Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_BYBIT} options={options} />
+<b>BYBIT</b>
+                <hr></hr>
+
 
 <Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_KUCOIN} options={options} />
 
@@ -410,6 +453,11 @@ function CH({token}) {
 
 {parameter=="DEPTH" && <div>  <br></br>
                
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_BYBIT} options={options} />
+<br></br><br></br><br></br>
+                <b>BYBIT</b>
+                <hr></hr>
 
 <Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_KUCOIN} options={options} />
 <br></br><br></br><br></br>

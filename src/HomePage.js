@@ -21,6 +21,7 @@ function HomePage({token}) {
   const [DEPTH_KUKOIN_DFYN,setDEPTH_KUKOIN_DFYN]=useState({})
   const [TV_BYBIT,setTV_BYBIT]=useState(20)
   const [SPREAD_BYBIT,setSPREAD_BYBIT]=useState(0)
+  const [DEPTH_BYBIT,setDEPTH_BYBIT]=useState(0)
   const [TV_MEXC_ROUTE,setTV_MEXC_ROUTE]=useState(0)
   const [SPREAD_MEXC_ROUTE,setSPREAD_MEXC_ROUTE]=useState(0)
   const [DEPTH_MEXC_ROUTE,setDEPTH_MEXC_ROUTE]=useState({})
@@ -44,6 +45,7 @@ function HomePage({token}) {
     
   const [TV_DATA_ROUTE,setTV_DATA_ROUTE] = useState([
       ["CEX", "24h Trading Volume", { role: "style" }],
+      ["Bybit",8990,"#b87333"]
       ["Kucoin", 8.94, "#b87333"], // RGB value
       ["MEXC", 10.49, "silver"], // English color name
       ["HTX", 19.3, "gold"],
@@ -119,29 +121,33 @@ function HomePage({token}) {
   useEffect(() => {
     const fetchData = async () => {
 
-     const bybit1=new kucoin()
-      
+   
 
-     
-      const res_kukoin1 = await axios('https://proxy-j1k6.onrender.com/kucoindata?token=route')
-      const res_kukoin2= await axios('https://proxy-j1k6.onrender.com/kucoindepth?token=route')
-      const res_kukoin3 = await axios('https://proxy-j1k6.onrender.com/kucoindata?token=dfyn')
-      const res_kukoin4= await axios('https://proxy-j1k6.onrender.com/kucoindepth?token=dfyn')
-      const res_mexc1=await axios('https://proxy-j1k6.onrender.com/mexcdata?token=route');
-      const res_mexc2= await axios('https://proxy-j1k6.onrender.com/mexcdepth?token=route')
-      const res_mexc3=await axios('https://proxy-j1k6.onrender.com/mexcdata?token=dfyn');
-      const res_mexc4= await axios('https://proxy-j1k6.onrender.com/mexcdepth?token=dfyn')
-      const res_htx1=await axios('https://proxy-j1k6.onrender.com/htxdata');
-      const res_htx2= await axios('https://proxy-j1k6.onrender.com/htxdepth')
-      const res_asd1=await axios('https://proxy-j1k6.onrender.com/asddata');
-      const res_asd2= await axios('https://proxy-j1k6.onrender.com/asddepth')
-      const res_gate1=await axios('https://proxy-j1k6.onrender.com/gatedata?token=route');
-      const res_gate2= await axios('https://proxy-j1k6.onrender.com/gatedepth?token=route')
-      const res_gate3=await axios('https://proxy-j1k6.onrender.com/gatedata?token=dfyn');
-      const res_gate4= await axios('https://proxy-j1k6.onrender.com/gatedepth?token=dfyn')
+      const res_bybit1=await axios('http://34.93.140.12:8000/bybitdata')
+      const res_bybit2=await axios('http://34.93.140.12:8000/bybitdepth')
+      const res_kukoin1 = await axios('http://34.93.140.12:8000/kucoindata?token=route')
+      const res_kukoin2= await axios('http://34.93.140.12:8000/kucoindepth?token=route')
+      const res_kukoin3 = await axios('http://34.93.140.12:8000/kucoindata?token=dfyn')
+      const res_kukoin4= await axios('http://34.93.140.12:8000/kucoindepth?token=dfyn')
+      const res_mexc1=await axios('http://34.93.140.12:8000/mexcdata?token=route');
+      const res_mexc2= await axios('http://34.93.140.12:8000/mexcdepth?token=route')
+      const res_mexc3=await axios('http://34.93.140.12:8000/mexcdata?token=dfyn');
+      const res_mexc4= await axios('http://34.93.140.12:8000/mexcdepth?token=dfyn')
+      const res_htx1=await axios('http://34.93.140.12:8000/htxdata');
+      const res_htx2= await axios('http://34.93.140.12:8000/htxdepth')
+      const res_asd1=await axios('http://34.93.140.12:8000/asddata');
+      const res_asd2= await axios('http://34.93.140.12:8000/asddepth')
+      const res_gate1=await axios('http://34.93.140.12:8000/gatedata?token=route');
+      const res_gate2= await axios('http://34.93.140.12:8000/gatedepth?token=route')
+      const res_gate3=await axios('http://34.93.140.12:8000/gatedata?token=dfyn');
+      const res_gate4= await axios('http://34.93.140.12:8000/gatedepth?token=dfyn')
       console.log(res_kukoin2.data)
     
-     console.log(res_kukoin1.data)
+    
+
+     setTV_BYBIT(res_bybit1.data.result.list[0].turnover24h)
+     setSPREAD_BYBIT(res_bybit1.data.result.list[0].ask1Price-res_bybit1.data.result.list[0].bid1Price)
+     setDEPTH_BYBIT(res_bybit2.data)
      setTV_KUKOIN_ROUTE( res_kukoin1.data.data.volValue)
       setSPREAD_KUKOIN_ROUTE(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy)
       setDEPTH_KUKOIN_ROUTE(res_kukoin2.data)
@@ -160,31 +166,35 @@ function HomePage({token}) {
 
       setTV_DATA_ROUTE([
             ["CEX", "24h Trading Volume", { role: "style" }],
-            ["Kucoin",parseFloat(res_kukoin1.data.data.volValue) , "#b87333"], // RGB value
-            ["MEXC",parseFloat(res_mexc1.data.volume), "silver"], // English color name
+            ["Bybit",parseFloat(res_bybit1.data.result.list[0].turnover24h), "yellow"], // RGB value
+            ["Kucoin",parseFloat(res_kukoin1.data.data.volValue), "red"],
+            ["MEXC",parseFloat(res_mexc1.data.volume), "bluer"], // English color name
             ["HTX", parseFloat(res_htx1.data.tick.vol), "gold"],
             ["GATE",parseFloat(res_gate1.data[0].quote_volume), "color: #e5e4e2"], // CSS-style declaration
             ["ASCENDEX", parseFloat(res_asd1.data.data.volume), "green"],
+            
           ])
       setSPREAD_DATA_ROUTE([
             ["CEX", "Spread", { role: "style" }],
-            ["Kucoin",parseFloat(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy) , "#b87333"], // RGB value
-            ["MEXC",parseFloat(res_mexc1.data.askPrice-res_mexc1.data.bidPrice), "silver"], // English color name
+            ["Bybit",parseFloat(res_bybit1.data.result.list[0].ask1Price-res_bybit1.data.result.list[0].bid1Price), "yellow"],
+            ["Kucoin",parseFloat(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy) , "red"], // RGB value
+            ["MEXC",parseFloat(res_mexc1.data.askPrice-res_mexc1.data.bidPrice), "blue"], // English color name
             ["GATE",parseFloat(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid), "color: #e5e4e2"], // CSS-style declaration
             ["ASCENDEX", parseFloat(res_asd1.data.data.ask[0]-res_asd1.data.data.bid[0]), "green"],
           ])
       setDEPTH_DATA_ROUTE([
             [
               "Depth",
+              "Bybit",
               "Kucoin",
               "MEXC",
               "HTX",
               "GATE",
               "ASENDEX"
             ],
-            [0.3,res_kukoin2.data["0.3%"],res_mexc2.data["0.3%"], res_htx2.data["0.3%"],res_gate2.data["0.3%"],res_asd2.data["0.3%"]],
-            [0.5,res_kukoin2.data["0.5%"],res_mexc2.data["0.5%"], res_htx2.data["0.5%"],res_gate2.data["0.5%"],res_asd2.data["0.5%"]],
-            [1, res_kukoin2.data["1%"],res_mexc2.data["1%"], res_htx2.data["1%"],res_gate2.data["1%"],res_asd2.data["1%"]],
+            [0.3,res_bybit2.data["0.3%"], res_kukoin2.data["0.3%"],res_mexc2.data["0.3%"], res_htx2.data["0.3%"],res_gate2.data["0.3%"],res_asd2.data["0.3%"]],
+            [0.5,res_bybit2.data["0.5%"],res_kukoin2.data["0.5%"],res_mexc2.data["0.5%"], res_htx2.data["0.5%"],res_gate2.data["0.5%"],res_asd2.data["0.5%"]],
+            [1, res_bybit2.data["1%"],res_kukoin2.data["1%"],res_mexc2.data["1%"], res_htx2.data["1%"],res_gate2.data["1%"],res_asd2.data["1%"]],
             
           ])
 
@@ -260,6 +270,10 @@ function HomePage({token}) {
               <td>{TV_ASD}</td>
               
               </tr>
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}> Bybit</th>
+              <td>{TV_BYBIT}</td>
+        </tr>
               
         <tr>
               <th style={{ borderRight: '1px solid black' }}> Kucoin</th>
@@ -305,7 +319,10 @@ function HomePage({token}) {
               <td>{SPREAD_ASD}</td>
               
               </tr>
-              
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}> Bybit</th>
+              <td>{SPREAD_BYBIT}</td>
+        </tr>
         <tr>
               <th style={{ borderRight: '1px solid black' }}>Kucoin</th>
               <td>{SPREAD_KUKOIN_ROUTE}</td>
@@ -352,7 +369,7 @@ function HomePage({token}) {
         <br></br>
         <table style={{ border: '1px solid black' }}>
               <tr>  <th style={{ borderRight: '1px solid black' }}>%</th>
-              
+              <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Bybit</th>
               <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Kucoin</th>
               <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black' }}>MEXC</th>
               <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black'}}>HTX</th>
@@ -363,6 +380,7 @@ function HomePage({token}) {
             
         <tr>
         <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.3%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.3%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.3%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.3%"]}</td>
@@ -371,6 +389,7 @@ function HomePage({token}) {
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>0.5%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.5%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.5%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.5%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.5%"]}</td>
@@ -380,10 +399,11 @@ function HomePage({token}) {
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>1%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["1%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["1%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["1%"]}</td>
         <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["1%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["1"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>0</td>
         <td>{DEPTH_GATE_ROUTE["0.5%"]}</td>
 
         </tr>
