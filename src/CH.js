@@ -202,7 +202,9 @@ function CH({token}) {
     useEffect(() => {
       const fetchData = async () => {
         const dataFromFireBase = await axios('http://34.93.140.12:8000/read');
-        const dataFromFireBase1 = dataFromFireBase.data.map(item => ({
+
+        const sortedData = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
+        const dataFromFireBase1 = sortedData.map(item => ({
           time: item.time,
           volume: item.exchange.map(ex => parseFloat(ex.volume)),
           spread: item.exchange.map(ex => ex.spread),

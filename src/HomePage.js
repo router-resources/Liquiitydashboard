@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { AtomSpinner,HollowDotsSpinner } from 'react-epic-spinners'
 import { Chart } from "react-google-charts";
 import logo from './Assets/logo.png'
-import {Dropdown,Button} from 'react-bootstrap';
+import {Dropdown,Button,Toast} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -40,6 +40,13 @@ function HomePage({token}) {
   const [TV_HTX,setTV_HTX]=useState(0)
   const [SPREAD_HTX,setSPREAD_HTX]=useState(0)
   const [DEPTH_HTX,setDEPTH_HTX]=useState({})
+  const [TOTAL_VOLUME_ROUTE,setTOTAL_VOLUME_ROUTE]=useState(0)
+  const [TOTAL_VOLUME_DFYN,setTOTAL_VOLUME_DFYN]=useState(0)
+
+  const [showTextTrading, setShowTextTrading] = useState(false);
+  const [showTextSpread, setShowTextSpread] = useState(false);
+  const [showTextDepth, setShowTextDepth] = useState(false);
+
 
 
     
@@ -145,24 +152,26 @@ function HomePage({token}) {
     
     
 
-     setTV_BYBIT(res_bybit1.data.result.list[0].turnover24h)
-     setSPREAD_BYBIT(res_bybit1.data.result.list[0].ask1Price-res_bybit1.data.result.list[0].bid1Price)
+     setTV_BYBIT(parseFloat(res_bybit1.data.result.list[0].turnover24h).toFixed(2))
+     setSPREAD_BYBIT(parseFloat(res_bybit1.data.result.list[0].ask1Price-res_bybit1.data.result.list[0].bid1Price).toFixed(3))
      setDEPTH_BYBIT(res_bybit2.data)
-     setTV_KUKOIN_ROUTE( res_kukoin1.data.data.volValue)
-      setSPREAD_KUKOIN_ROUTE(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy)
+     setTV_KUKOIN_ROUTE( parseFloat(res_kukoin1.data.data.volValue).toFixed(2))
+      setSPREAD_KUKOIN_ROUTE(parseFloat(res_kukoin1.data.data.sell-res_kukoin1.data.data.buy).toFixed(3))
       setDEPTH_KUKOIN_ROUTE(res_kukoin2.data)
-      setTV_MEXC_ROUTE(res_mexc1.data.volume);
-      setSPREAD_MEXC_ROUTE(res_mexc1.data.askPrice-res_mexc1.data.bidPrice)
+      setTV_MEXC_ROUTE(parseFloat(res_mexc1.data.volume).toFixed(2));
+      setSPREAD_MEXC_ROUTE(parseFloat(res_mexc1.data.askPrice-res_mexc1.data.bidPrice).toFixed(3))
       setDEPTH_MEXC_ROUTE(res_mexc2.data)
-      setTV_HTX(res_htx1.data.tick.vol);
-      setSPREAD_HTX(res_kukoin1.data.data.volValue)
+      setTV_HTX(parseFloat(res_htx1.data.tick.vol).toFixed(2));
+      setSPREAD_HTX(parseFloat(res_kukoin1.data.data.volValue).toFixed(3))
       setDEPTH_HTX(res_htx2.data)
-      setTV_GATE_ROUTE(res_gate1.data[0].quote_volume);
-      setSPREAD_GATE_ROUTE(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid)
+      setTV_GATE_ROUTE(parseFloat(res_gate1.data[0].quote_volume).toFixed(2));
+      setSPREAD_GATE_ROUTE(parseFloat(res_gate1.data[0].lowest_ask-res_gate1.data[0].highest_bid).toFixed(3))
       setDEPTH_GATE_ROUTE(res_gate2.data)
-      setTV_ASD(res_asd1.data.data.volume);
-      setSPREAD_ASD(res_asd1.data.data.ask[0]-res_asd1.data.data.bid[0])
+      setTV_ASD(parseFloat(res_asd1.data.data.volume).toFixed(2));
+      setSPREAD_ASD(parseFloat(res_asd1.data.data.ask[0]-res_asd1.data.data.bid[0]).toFixed(3))
       setDEPTH_ASD(res_asd2.data)
+
+      setTOTAL_VOLUME_ROUTE((parseFloat(res_bybit1.data.result.list[0].turnover24h)+parseFloat(res_kukoin1.data.data.volValue)+parseFloat(res_mexc1.data.volume)+parseFloat(res_htx1.data.tick.vol)+parseFloat(res_gate1.data[0].quote_volume)+parseFloat(res_asd1.data.data.volume)).toFixed(2))
 
       setTV_DATA_ROUTE([
             ["CEX", "24h Trading Volume", { role: "style" }],
@@ -201,7 +210,7 @@ function HomePage({token}) {
           setTV_DATA_DFYN([
             ["CEX", "24h Trading Volume", { role: "style" }],
             ["Kucoin",parseFloat(res_kukoin3.data.data.volValue) , "#b87333"], // RGB value
-            ["MEXC",parseFloat(res_mexc3.data.volume), "silver"], // English color name
+            ["MEXC",parseFloat(res_mexc3.data.quoteVolume), "silver"], // English color name
             ["GATE",parseFloat(res_gate3.data[0].quote_volume), "color: #e5e4e2"] // CSS-style declaration
             
           ])
@@ -226,15 +235,17 @@ function HomePage({token}) {
             
           ])
 
-          setTV_KUKOIN_DFYN( res_kukoin3.data.data.volValue)
-          setSPREAD_KUKOIN_DFYN(res_kukoin3.data.data.sell-res_kukoin3.data.data.buy)
+          setTV_KUKOIN_DFYN( parseFloat(res_kukoin3.data.data.volValue).toFixed(2))
+          setSPREAD_KUKOIN_DFYN(parseFloat(res_kukoin3.data.data.sell-res_kukoin3.data.data.buy).toFixed(5))
           setDEPTH_KUKOIN_DFYN(res_kukoin4.data)
-          setTV_MEXC_DFYN(res_mexc3.data.volume);
-          setSPREAD_MEXC_DFYN(res_mexc3.data.askPrice-res_mexc3.data.bidPrice)
+          setTV_MEXC_DFYN( parseFloat(res_mexc3.data.quoteVolume).toFixed(2))
+          setSPREAD_MEXC_DFYN(parseFloat(res_mexc3.data.askPrice-res_mexc3.data.bidPrice).toFixed(5))
           setDEPTH_MEXC_DFYN(res_mexc4.data)
-          setTV_GATE_DFYN(res_gate3.data[0].quote_volume);
-          setSPREAD_GATE_DFYN(res_gate3.data[0].lowest_ask-res_gate3.data[0].highest_bid)
+          setTV_GATE_DFYN( parseFloat(res_gate3.data[0].quote_volume).toFixed(2));
+          setSPREAD_GATE_DFYN(parseFloat(res_gate3.data[0].lowest_ask-res_gate3.data[0].highest_bid).toFixed(5))
           setDEPTH_GATE_DFYN(res_gate4.data)
+          
+          setTOTAL_VOLUME_DFYN(parseFloat(res_kukoin3.data.data.volValue)+parseFloat(res_mexc3.data.quoteVolume)+parseFloat(res_gate3.data[0].quote_volume))
       // const res_bybit1=await axios('https://proxy-j1k6.onrender.com/exchange?exchangeName=bybit');
       // setTV_BYBIT( res_bybit.data.data.volValue)
       // setSPREAD_BYBIT(res_kukoin1.data.data.volValue)
@@ -249,15 +260,32 @@ function HomePage({token}) {
         {TV_KUKOIN_ROUTE!=0? <center>
     
 
-
-
-    
+         
 
 
     {token=="route"?<div>
+
+  
       
-                <h2>Trading Volume</h2>
+                <h2>Trading Volume <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextTrading(true)}
+        onMouseLeave={() => setShowTextTrading(false)}>&#x24D8;</l></h2>
         <br></br>
+
+        {showTextTrading && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'5em'}}
+          onMouseEnter={() => setShowTextTrading(true)}
+          onMouseLeave={() => setShowTextTrading(false)}
+        >
+          <p>
+          <br></br>
+            
+          24-Hour Trading Volume of ROUTE Across Exchanges (in USDT)
+            
+            </p>
+        </div>
+      )}
 
         <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_ROUTE} options={options} />
         <table  style={{ border: '1px solid black' }}>
@@ -293,10 +321,12 @@ function HomePage({token}) {
               <th style={{ borderRight: '1px solid black' }}>HTX</th>
               <td>{TV_HTX}</td>
               </tr>
-            
+           
               
         </table>
-    
+        <br></br>
+        <tr> <h5> Total = {TOTAL_VOLUME_ROUTE}</h5></tr>
+          
         <br></br>
      
         <br></br>
@@ -305,7 +335,28 @@ function HomePage({token}) {
 
       
 
-        <h2>Spread</h2>
+        <h2>Spread <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextSpread(true)}
+        onMouseLeave={() => setShowTextSpread(false)}>&#x24D8;</l></h2>
+        <br></br>
+
+        {showTextSpread && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'8em'}}
+          onMouseEnter={() => setShowTextSpread(true)}
+          onMouseLeave={() => setShowTextSpread(false)}
+        >
+          <p>
+            <br></br>
+            Spread is calculated by taking the difference between the buying price (also known as the "bid" price) and the selling price (also known as the "ask" price) of ROUTE on an exchange.
+            <br></br><br></br>
+
+
+          Spread = Ask Price − Bid Price
+                 
+          </p>
+        </div>
+      )}
 
         <br></br>
         <Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_ROUTE} options={options} />
@@ -345,8 +396,32 @@ function HomePage({token}) {
 
         <hr></hr>
 
-        <h2>Depth</h2>
+        <h2>Depth <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextDepth(true)}
+        onMouseLeave={() => setShowTextDepth(false)}>&#x24D8;</l></h2>
+        <br></br>
 
+        {showTextDepth && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'8em'}}
+          onMouseEnter={() => setShowTextDepth(true)}
+          onMouseLeave={() => setShowTextDepth(false)}
+        >
+          <p>
+            <br></br>
+            Depth refers to the liquidity available at various price levels within the order book. 
+            <br></br><br></br>
+            
+            Calculated over 0.3%, 0.5%, and 1% .
+
+          
+
+
+       
+                 
+          </p>
+        </div>
+      )}
         <Chart
               chartType="Line"
               width="100%"
@@ -380,31 +455,31 @@ function HomePage({token}) {
             
         <tr>
         <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.3%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.3%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.3%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.3%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.3%"]}</td>
-        <td>{DEPTH_GATE_ROUTE["0.3%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.3%"].toFixed(2)}</td>
+        <td>{DEPTH_GATE_ROUTE["0.3%"].toFixed(2)}</td>
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>0.5%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.5%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.5%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.5%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.5%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.5%"]}</td>
-        <td >{DEPTH_GATE_ROUTE["0.5%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_ASD["0.5%"].toFixed(2)}</td>
+        <td >{DEPTH_GATE_ROUTE["0.5%"].toFixed(2)}</td>
 
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>1%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["1%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["1%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["1%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["1%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_BYBIT["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_ROUTE["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_ROUTE["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_HTX["1%"].toFixed(2)}</td>
         <td style={{ borderRight: '1px solid black' }}>0</td>
-        <td>{DEPTH_GATE_ROUTE["0.5%"]}</td>
+        <td>{DEPTH_GATE_ROUTE["0.5%"].toFixed(2)}</td>
 
         </tr>
         </table>
@@ -413,7 +488,25 @@ function HomePage({token}) {
 
     </div>:<div>
       
-    <h2>Trading Volume</h2>
+    <h2>Trading Volume <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextTrading(true)}
+        onMouseLeave={() => setShowTextTrading(false)}>&#x24D8;</l></h2>
+        <br></br>
+
+        {showTextTrading && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'5em'}}
+          onMouseEnter={() => setShowTextTrading(true)}
+          onMouseLeave={() => setShowTextTrading(false)}
+        >
+          <p>
+          <br></br>
+            
+          24-Hour Trading Volume of ROUTE Across Exchanges (in USDT)
+            
+            </p>
+        </div>
+      )}
         <br></br>
 
         <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_DFYN} options={options} />
@@ -442,11 +535,35 @@ function HomePage({token}) {
             
               
         </table>
+<br></br>
+        <h5> Total = {parseFloat(TOTAL_VOLUME_DFYN).toFixed(2)}</h5>
         <br></br>
         <hr></hr>
 
 
-        <h2>Spread</h2>
+        <h2>Spread  <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextSpread(true)}
+        onMouseLeave={() => setShowTextSpread(false)}>&#x24D8;</l></h2>
+        <br></br>
+
+        {showTextSpread && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'8em'}}
+          onMouseEnter={() => setShowTextSpread(true)}
+          onMouseLeave={() => setShowTextSpread(false)}
+        >
+          <p>
+            <br></br>
+            Spread is calculated by taking the difference between the buying price (also known as the "bid" price) and the selling price (also known as the "ask" price) of ROUTE on an exchange.
+            <br></br><br></br>
+
+
+          Spread = Ask Price − Bid Price
+                 
+          </p>
+        </div>
+      )}
+
 
         <br></br>
         <Chart chartType="ColumnChart" width="100%" height="400px" data={SPREAD_DATA_DFYN} options={options} />
@@ -479,7 +596,32 @@ function HomePage({token}) {
 
         <hr></hr>
 
-        <h2>Depth</h2>
+        <h2>Depth <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextDepth(true)}
+        onMouseLeave={() => setShowTextDepth(false)}>&#x24D8;</l></h2>
+        <br></br>
+
+        {showTextDepth && (
+        <div 
+          className="text-container" 
+          style={{backgroundColor:'grey',color:'white',width:'35',height:'8em'}}
+          onMouseEnter={() => setShowTextDepth(true)}
+          onMouseLeave={() => setShowTextDepth(false)}
+        >
+          <p>
+            <br></br>
+            Depth refers to the liquidity available at various price levels within the order book. 
+            <br></br><br></br>
+            
+            Calculated over 0.3%, 0.5%, and 1% .
+
+          
+
+
+       
+                 
+          </p>
+        </div>
+      )}
 
         <Chart
               chartType="Line"
@@ -512,22 +654,22 @@ function HomePage({token}) {
             
         <tr>
         <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.3%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.3%"]}</td>
-        <td>{DEPTH_GATE_DFYN["0.3%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.3%"].toFixed(2)}</td>
+        <td>{DEPTH_GATE_DFYN["0.3%"].toFixed(2)}</td>
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>0.5%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.5%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.5%"]}</td>
-        <td >{DEPTH_GATE_DFYN["0.5%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["0.5%"].toFixed(2)}</td>
+        <td >{DEPTH_GATE_DFYN["0.5%"].toFixed(2)}</td>
 
         </tr>
         <tr>
         <td style={{ borderRight: '1px solid black' }}>1%</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["1%"]}</td>
-        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["1%"]}</td>
-        <td>{DEPTH_GATE_DFYN["0.5%"]}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_KUKOIN_DFYN["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_MEXC_DFYN["1%"].toFixed(2)}</td>
+        <td>{DEPTH_GATE_DFYN["1%"].toFixed(2)}</td>
 
         </tr>
         </table>
