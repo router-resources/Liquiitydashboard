@@ -70,6 +70,15 @@ function CH({token}) {
       "id": "0FJCJkGvysv89INTupQh"
     }])
 
+    const [TV_DATA_TOTAL,setTV_DATA_TOTAL] = useState([
+      ["CEX", "24h Trading Volume", { role: "style" }],
+      ["19 May 2024", 8.94, "#b87333"], // RGB value
+      ["19 May 2024", 10.49, "silver"], // English color name,
+      ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+      ["19 May 2024", 21.45, "green"],
+    ])
+
+
     const [TV_DATA_BYBIT,setTV_DATA_BYBIT] = useState([
       ["CEX", "24h Trading Volume", { role: "style" }],
       ["19 May 2024", 8.94, "#b87333"], // RGB value
@@ -221,6 +230,21 @@ function CH({token}) {
           return color;
         };
         
+        const createTotalVolumeDataArray = () => {
+          const header = ["CEX", "24h Trading Volume", { role: "style" }];
+          const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
+            let sum=0;
+            curr.exchange.forEach(exch => {
+             
+              sum=sum+parseFloat(exch.volume)
+            });
+            acc.push([curr.time, sum, getRandomColor()]);
+            return acc;
+          }, []);
+          dataArray.unshift(header); // Add header at the beginning of the array
+          return dataArray;
+        };
+
         const createVolumeDataArray = (exchangeName) => {
           const header = ["CEX", "24h Trading Volume", { role: "style" }];
           const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
@@ -270,6 +294,9 @@ function CH({token}) {
               }
             }
           }
+
+         
+
         
           const result = [header];
           for (let i = 0; i < depthPercentages.length; i++) {
@@ -280,11 +307,13 @@ function CH({token}) {
           return result;
         };
 
+
         const Bybit_data_volume=createVolumeDataArray("Bybit")
         const Kucoin_data_volume = createVolumeDataArray("Kucoin");
         const Mexc_data_volume = createVolumeDataArray("Mexc");
         const Ascendex_data_volume = createVolumeDataArray("Ascendex");
         const Gate_data_volume = createVolumeDataArray("Gate");
+        const Total_data_volume=createTotalVolumeDataArray()
 
         const Bybit_data_spread=createSpreadDataArray("Bybit")
         const Kucoin_data_spread = createSpreadDataArray("Kucoin");
@@ -298,6 +327,8 @@ function CH({token}) {
         const Ascendex_data_depth = createDepthDataArray("Ascendex");
         const Gate_data_depth = createDepthDataArray("Gate");
 
+
+        setTV_DATA_TOTAL(Total_data_volume)
         setTV_DATA_BYBIT(Bybit_data_volume)
         setTV_DATA_KUCOIN(Kucoin_data_volume)
         setTV_DATA_MEXC(Mexc_data_volume)
@@ -395,7 +426,9 @@ function CH({token}) {
 
 {parameter=="VOLUME" && <div>
 
-
+<Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_TOTAL} options={options} />
+<b>Total 24 Hr Volume</b>
+                <hr></hr>
 <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_BYBIT} options={options} />
 <b>BYBIT</b>
                 <hr></hr>
