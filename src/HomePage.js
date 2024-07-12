@@ -9,6 +9,8 @@ import {Dropdown,Button,Toast} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+
+
 import './App.css'
 function HomePage({token}) {
 
@@ -42,6 +44,14 @@ function HomePage({token}) {
   const [DEPTH_HTX,setDEPTH_HTX]=useState({})
   const [TOTAL_VOLUME_ROUTE,setTOTAL_VOLUME_ROUTE]=useState(0)
   const [TOTAL_VOLUME_DFYN,setTOTAL_VOLUME_DFYN]=useState(0)
+  const [TV_UNISWAP_ROUTEETHV2,setTV_UNISWAP_ROUTEETHV2]=useState(0)
+  const [TV_UNISWAP_ROUTEETHV3,setTV_UNISWAP_ROUTEETHV3]=useState(0)
+  const [TV_UNISWAP_ROUTEUSDCV2,setTV_UNISWAP_ROUTEUSDCV2]=useState(0)
+  const [TV_DFYN_ROUTEETH,setTV_DFYN_ROUTEETH]=useState(0)
+  const [TV_DFYN_ROUTEUSDC,setTV_DFYN_ROUTEUSDC]=useState(0)
+  const [TOTAL_VOLUME_ROUTE_DEX,setTOTAL_VOLUME_ROUTE_DEX]=useState(0)
+
+
 
   const [showTextTrading, setShowTextTrading] = useState(false);
   const [showTextSpread, setShowTextSpread] = useState(false);
@@ -113,6 +123,16 @@ function HomePage({token}) {
       [1, 25.4, 57, 25.7,0],
       
     ]);
+
+    const [TV_DATA_UNISWAP_ROUTE,setTV_DATA_UNISWAP_ROUTE] = useState([
+      ["DEX", "24h Trading Volume", { role: "style" }],
+      ["Uniswap V2 ROUTE-ETH",8990,"#b87333"]
+      ["Uniswap V3 ROUTE-ETH", 8.94, "#b87333"], // RGB value
+      ["Uniswap V2 ROUTE-USDC", 10.49, "silver"], // English color name
+      ["DFYN ROUTE-ETH", 19.3, "gold"],
+      ["DFYN ROUTE-USDC", 21.45, "color: #e5e4e2"], // CSS-style declaration
+     
+    ]);
     
       const options = {
             chartArea: {
@@ -130,24 +150,29 @@ function HomePage({token}) {
 
    
 
-      const res_bybit1=await axios('http://34.93.0.57:8000/bybitdata')
-      const res_bybit2=await axios('http://34.93.0.57:8000/bybitdepth')
-      const res_kukoin1 = await axios('http://34.93.0.57:8000/kucoindata?token=route')
-      const res_kukoin2= await axios('http://34.93.0.57:8000/kucoindepth?token=route')
-      const res_kukoin3 = await axios('http://34.93.0.57:8000/kucoindata?token=dfyn')
-      const res_kukoin4= await axios('http://34.93.0.57:8000/kucoindepth?token=dfyn')
-      const res_mexc1=await axios('http://34.93.0.57:8000/mexcdata?token=route');
-      const res_mexc2= await axios('http://34.93.0.57:8000/mexcdepth?token=route')
-      const res_mexc3=await axios('http://34.93.0.57:8000/mexcdata?token=dfyn');
-      const res_mexc4= await axios('http://34.93.0.57:8000/mexcdepth?token=dfyn')
-      const res_htx1=await axios('http://34.93.0.57:8000/htxdata');
-      const res_htx2= await axios('http://34.93.0.57:8000/htxdepth')
-      const res_asd1=await axios('http://34.93.0.57:8000/asddata');
-      const res_asd2= await axios('http://34.93.0.57:8000/asddepth')
-      const res_gate1=await axios('http://34.93.0.57:8000/gatedata?token=route');
-      const res_gate2= await axios('http://34.93.0.57:8000/gatedepth?token=route')
-      const res_gate3=await axios('http://34.93.0.57:8000/gatedata?token=dfyn');
-      const res_gate4= await axios('http://34.93.0.57:8000/gatedepth?token=dfyn')
+      const res_bybit1=await axios('http://localhost:8000/bybitdata')
+      const res_bybit2=await axios('http://localhost:8000/bybitdepth')
+      const res_kukoin1 = await axios('http://localhost:8000/kucoindata?token=route')
+      const res_kukoin2= await axios('http://localhost:8000/kucoindepth?token=route')
+      const res_kukoin3 = await axios('http://localhost:8000/kucoindata?token=dfyn')
+      const res_kukoin4= await axios('http://localhost:8000/kucoindepth?token=dfyn')
+      const res_mexc1=await axios('http://localhost:8000/mexcdata?token=route');
+      const res_mexc2= await axios('http://localhost:8000/mexcdepth?token=route')
+      const res_mexc3=await axios('http://localhost:8000/mexcdata?token=dfyn');
+      const res_mexc4= await axios('http://localhost:8000/mexcdepth?token=dfyn')
+      const res_htx1=await axios('http://localhost:8000/htxdata');
+      const res_htx2= await axios('http://localhost:8000/htxdepth')
+      const res_asd1=await axios('http://localhost:8000/asddata');
+      const res_asd2= await axios('http://localhost:8000/asddepth')
+      const res_gate1=await axios('http://localhost:8000/gatedata?token=route');
+      const res_gate2= await axios('http://localhost:8000/gatedepth?token=route')
+      const res_gate3=await axios('http://localhost:8000/gatedata?token=dfyn');
+      const res_gate4= await axios('http://localhost:8000/gatedepth?token=dfyn')
+      const res_uniswaprouteethv2= await axios('http://localhost:8000/uniswapdata?token=routeethv2')
+      const res_uniswaprouteethv3= await axios('http://localhost:8000/uniswapdata?token=routeethv3')
+      const res_uniswaprouteusdcv2= await axios('http://localhost:8000/uniswapdata?token=routeusdcv2')
+      const res_dfynrouteeth= await axios('http://localhost:8000/dfyndata?token=routeeth')
+      const res_dfynrouteusdc= await axios('http://localhost:8000/dfyndata?token=routeusdc')
       console.log(res_kukoin2.data)
     
     
@@ -250,7 +275,25 @@ function HomePage({token}) {
       // setTV_BYBIT( res_bybit.data.data.volValue)
       // setSPREAD_BYBIT(res_kukoin1.data.data.volValue)
      
-        
+          setTV_UNISWAP_ROUTEETHV2(parseFloat(res_uniswaprouteethv2.data.data.attributes.volume_usd.h24).toFixed(2))
+          setTV_UNISWAP_ROUTEETHV3(parseFloat(res_uniswaprouteethv3.data.data.attributes.volume_usd.h24).toFixed(2))
+          setTV_UNISWAP_ROUTEUSDCV2(parseFloat(res_uniswaprouteusdcv2.data.data.attributes.volume_usd.h24).toFixed(2))
+          setTV_DFYN_ROUTEETH(parseFloat(res_dfynrouteeth.data.data.attributes.volume_usd.h24).toFixed(2))
+          setTV_DFYN_ROUTEUSDC(parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24).toFixed(2))
+
+          setTOTAL_VOLUME_ROUTE_DEX(parseFloat(res_uniswaprouteethv2.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_uniswaprouteethv3.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_uniswaprouteusdcv2.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_dfynrouteeth.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24).toFixed(2))
+
+          setTV_DATA_UNISWAP_ROUTE([
+            ["DEX", "24h Trading Volume", { role: "style" }],
+            ["UNISWAP V2 ROUTE-ETH",parseFloat(res_uniswaprouteethv2.data.data.attributes.volume_usd.h24), "yellow"], // RGB value
+            ["UNISWAP V3 ROUTE-ETH",parseFloat(res_uniswaprouteethv3.data.data.attributes.volume_usd.h24), "red"],
+            ["UNISWAP V2 ROUTE-USDC",parseFloat(res_uniswaprouteusdcv2.data.data.attributes.volume_usd.h24), "bluer"], // English color name
+            ["DFYN ROUTE-ETH", parseFloat(res_dfynrouteeth.data.data.attributes.volume_usd.h24), "gold"],
+            ["DFYN ROUTE-USDC",parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24), "color: #e5e4e2"], // CSS-style declaration
+          
+
+          ])
+         
     }
     fetchData();
   }, []);
@@ -281,12 +324,13 @@ function HomePage({token}) {
           <p>
           <br></br>
             
-          24-Hour Trading Volume of ROUTE Across Exchanges (in USDT)
+          24-Hour Trading Volume of ROUTE Across Exchanges
             
             </p>
         </div>
       )}
-
+        <br></br>
+        <h3>CEX</h3>
         <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_ROUTE} options={options} />
         <table  style={{ border: '1px solid black' }}>
               <tr>
@@ -331,7 +375,55 @@ function HomePage({token}) {
      
         <br></br>
 
+     
+        <br></br>
+        <h3>DEX</h3>
+
+        <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_UNISWAP_ROUTE} options={options} />
+        <table  style={{ border: '1px solid black' }}>
+              <tr>
+        <th style={{ borderRight: '1px solid black',borderBottom: '1px solid black' }}>DEX</th>
+        <th style={{borderBottom: '1px solid black'}}>24h Volume</th>
+        </tr>
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}>UNISWAP V2 ROUTE-ETH</th>
+              <td>{TV_UNISWAP_ROUTEETHV2}</td>
+              
+              </tr>
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}> UNISWAP V3 ROUTE-ETH</th>
+              <td>{TV_UNISWAP_ROUTEETHV3}</td>
+        </tr>
+              
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}> UNISWAP V2 ROUTE-USDC</th>
+              <td>{TV_UNISWAP_ROUTEUSDCV2}</td>
+        </tr>
+        <tr>
+              <th style={{ borderRight: '1px solid black' }}>DFYN ROUTE-ETH</th>
+              <td>{TV_DFYN_ROUTEETH}</td>
+              
+              </tr>
+              <tr>
+              <th style={{ borderRight: '1px solid black' }}>DFYN ROUTE-USDC</th>
+              <td>{TV_DFYN_ROUTEUSDC}</td>
+              
+              </tr>
+              
+             
+           
+              
+        </table>
+        <br></br>
+        {/* <tr> <h5> Total = {TOTAL_VOLUME_ROUTE}</h5></tr> */}
+          
+        <br></br>
+     
+        <br></br>
+
         <hr></hr>
+
+        
 
       
 

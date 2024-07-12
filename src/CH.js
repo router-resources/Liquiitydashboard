@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function CH({token}) {
 
     const [parameter,setParameter]=useState('VOLUME')
+    const [month,setMonth]=useState('Jun')
 
   
   
@@ -210,7 +211,7 @@ function CH({token}) {
 
     useEffect(() => {
       const fetchData = async () => {
-        const dataFromFireBase = await axios('http://34.93.0.57:8000/read');
+        const dataFromFireBase = await axios('http://localhost:8000/read');
 
         const sortedData = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
         const dataFromFireBase1 = sortedData.map(item => ({
@@ -234,22 +235,29 @@ function CH({token}) {
           const header = ["CEX", "24h Trading Volume", { role: "style" }];
           const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
             let sum=0;
-            curr.exchange.forEach(exch => {
+            if(curr.time.substring(0,3)==month)
+              {
+                curr.exchange.forEach(exch => {
              
-              sum=sum+parseFloat(exch.volume)
-            });
-            acc.push([curr.time, sum, getRandomColor()]);
+                  sum=sum+parseFloat(exch.volume)
+                });
+                acc.push([curr.time, sum, getRandomColor()]);
+              }
+           
             return acc;
           }, []);
           dataArray.unshift(header); // Add header at the beginning of the array
           return dataArray;
         };
 
-        const createVolumeDataArray = (exchangeName) => {
+        const createVolumeDataArray = (exchangeName,month1) => {
           const header = ["CEX", "24h Trading Volume", { role: "style" }];
           const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
+
             curr.exchange.forEach(exch => {
-              if (exch.name === exchangeName) {
+
+              console.log("time",curr.time.substring(0, 3),month1)
+              if (exch.name === exchangeName && curr.time.substring(0, 3)==month1) {
                 acc.push([curr.time, parseFloat(exch.volume), getRandomColor()]);
               }
             });
@@ -262,7 +270,7 @@ function CH({token}) {
           const header = ["CEX", "Spread", { role: "style" }];
           const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
             curr.exchange.forEach(exch => {
-              if (exch.name === exchangeName) {
+              if (exch.name === exchangeName && curr.time.substring(0,3)==month) {
                 acc.push([curr.time, exch.spread, getRandomColor()]);
               }
             });
@@ -283,17 +291,23 @@ function CH({token}) {
         
           for (let i = 0; i < dataFromFireBase.data.length; i++) {
             const curr = dataFromFireBase.data[i];
-            header.push(curr.time);
-            for (let j = 0; j < curr.exchange.length; j++) {
-              const exch = curr.exchange[j];
-              if (exch.name === exchangeName) {
-                for (let k = 0; k < depthPercentages.length; k++) {
-                  const percentage = depthPercentages[k];
-                  depthData[percentage].push(exch.depth[percentage] || 0);
+
+            if(curr.time.substring(0,3)==month)
+              {
+                header.push(curr.time);
+          
+                for (let j = 0; j < curr.exchange.length  ; j++) {
+                  const exch = curr.exchange[j];
+                  if (exch.name === exchangeName ) {
+                    for (let k = 0; k < depthPercentages.length; k++) {
+                      const percentage = depthPercentages[k];
+                      depthData[percentage].push(exch.depth[percentage] || 0);
+                    }
+                  }
                 }
               }
-            }
-          }
+              }
+           
 
          
 
@@ -308,11 +322,11 @@ function CH({token}) {
         };
 
 
-        const Bybit_data_volume=createVolumeDataArray("Bybit")
-        const Kucoin_data_volume = createVolumeDataArray("Kucoin");
-        const Mexc_data_volume = createVolumeDataArray("Mexc");
-        const Ascendex_data_volume = createVolumeDataArray("Ascendex");
-        const Gate_data_volume = createVolumeDataArray("Gate");
+        const Bybit_data_volume=createVolumeDataArray("Bybit",month)
+        const Kucoin_data_volume = createVolumeDataArray("Kucoin",month);
+        const Mexc_data_volume = createVolumeDataArray("Mexc",month);
+        const Ascendex_data_volume = createVolumeDataArray("Ascendex",month);
+        const Gate_data_volume = createVolumeDataArray("Gate",month);
         const Total_data_volume=createTotalVolumeDataArray()
 
         const Bybit_data_spread=createSpreadDataArray("Bybit")
@@ -359,7 +373,7 @@ function CH({token}) {
       
     
       fetchData();
-    }, []);
+    }, [month]);
     
 
     useEffect(()=>{
@@ -367,7 +381,7 @@ function CH({token}) {
         
 
         const fetchData=async ()=>{
-            const dataFromFireBase = await axios('http://34.93.0.57:8000/read')
+            const dataFromFireBase = await axios('http://localhost:8000/read')
             const dataFromFireBase1=dataFromFireBase.data.map(item => ({
                 time: item.time,
                 volume: item.exchange.map(ex => parseFloat(ex.volume)),
@@ -391,6 +405,7 @@ function CH({token}) {
   return (
     <div>
         <center>
+          <div class="field">
         <Dropdown>
       <Dropdown.Toggle style={{backgroundColor: 'white', color:'black'}} id="dropdown-basic">
             {parameter}
@@ -419,6 +434,58 @@ function CH({token}) {
 
       </Dropdown.Menu>
     </Dropdown>
+
+    <Dropdown>
+      <Dropdown.Toggle style={{backgroundColor: 'white', color:'black'}} id="dropdown-basic">
+            {month}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+
+        <Dropdown.Item  onClick={()=>{
+            
+            setMonth('May')
+           
+          }}>May</Dropdown.Item>
+         <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Jun')
+           
+          }}>June</Dropdown.Item>
+         <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Jul')
+           
+          }}>July</Dropdown.Item>
+         <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Aug')
+           
+          }}>August</Dropdown.Item>
+        <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Sep')
+           
+          }}>September</Dropdown.Item>
+        <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Oct')
+           
+          }}>October</Dropdown.Item>
+        <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Nov')
+           
+          }}>November</Dropdown.Item>
+        <Dropdown.Item  onClick={()=>{
+            
+            setMonth('Dec')
+           
+          }}>December</Dropdown.Item>
+        
+      </Dropdown.Menu>
+    </Dropdown>
+    </div>
            
 
 
