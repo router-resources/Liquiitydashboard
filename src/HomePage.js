@@ -144,35 +144,35 @@ function HomePage({token}) {
       
     };
     
-
+// http://34.93.102.172:8000/
   useEffect(() => {
     const fetchData = async () => {
 
    
 
-      const res_bybit1=await axios('http://localhost:8000/bybitdata')
-      const res_bybit2=await axios('http://localhost:8000/bybitdepth')
-      const res_kukoin1 = await axios('http://localhost:8000/kucoindata?token=route')
-      const res_kukoin2= await axios('http://localhost:8000/kucoindepth?token=route')
-      const res_kukoin3 = await axios('http://localhost:8000/kucoindata?token=dfyn')
-      const res_kukoin4= await axios('http://localhost:8000/kucoindepth?token=dfyn')
-      const res_mexc1=await axios('http://localhost:8000/mexcdata?token=route');
-      const res_mexc2= await axios('http://localhost:8000/mexcdepth?token=route')
-      const res_mexc3=await axios('http://localhost:8000/mexcdata?token=dfyn');
-      const res_mexc4= await axios('http://localhost:8000/mexcdepth?token=dfyn')
-      const res_htx1=await axios('http://localhost:8000/htxdata');
-      const res_htx2= await axios('http://localhost:8000/htxdepth')
-      const res_asd1=await axios('http://localhost:8000/asddata');
-      const res_asd2= await axios('http://localhost:8000/asddepth')
-      const res_gate1=await axios('http://localhost:8000/gatedata?token=route');
-      const res_gate2= await axios('http://localhost:8000/gatedepth?token=route')
-      const res_gate3=await axios('http://localhost:8000/gatedata?token=dfyn');
-      const res_gate4= await axios('http://localhost:8000/gatedepth?token=dfyn')
-      const res_uniswaprouteethv2= await axios('http://localhost:8000/uniswapdata?token=routeethv2')
-      const res_uniswaprouteethv3= await axios('http://localhost:8000/uniswapdata?token=routeethv3')
-      const res_uniswaprouteusdcv2= await axios('http://localhost:8000/uniswapdata?token=routeusdcv2')
-      const res_dfynrouteeth= await axios('http://localhost:8000/dfyndata?token=routeeth')
-      const res_dfynrouteusdc= await axios('http://localhost:8000/dfyndata?token=routeusdc')
+      const res_bybit1=await axios('http://34.93.102.172:8000/bybitdata')
+      const res_bybit2=await axios('http://34.93.102.172:8000/bybitdepth')
+      const res_kukoin1 = await axios('http://34.93.102.172:8000/kucoindata?token=route')
+      const res_kukoin2= await axios('http://34.93.102.172:8000/kucoindepth?token=route')
+      const res_kukoin3 = await axios('http://34.93.102.172:8000/kucoindata?token=dfyn')
+      const res_kukoin4= await axios('http://34.93.102.172:8000/kucoindepth?token=dfyn')
+      const res_mexc1=await axios('http://34.93.102.172:8000/mexcdata?token=route');
+      const res_mexc2= await axios('http://34.93.102.172:8000/mexcdepth?token=route')
+      const res_mexc3=await axios('http://34.93.102.172:8000/mexcdata?token=dfyn');
+      const res_mexc4= await axios('http://34.93.102.172:8000/mexcdepth?token=dfyn')
+      const res_htx1=await axios('http://34.93.102.172:8000/htxdata');
+      const res_htx2= await axios('http://34.93.102.172:8000/htxdepth')
+      const res_asd1=await axios('http://34.93.102.172:8000/asddata');
+      const res_asd2= await axios('http://34.93.102.172:8000/asddepth')
+      const res_gate1=await axios('http://34.93.102.172:8000/gatedata?token=route');
+      const res_gate2= await axios('http://34.93.102.172:8000/gatedepth?token=route')
+      const res_gate3=await axios('http://34.93.102.172:8000/gatedata?token=dfyn');
+      const res_gate4= await axios('http://34.93.102.172:8000/gatedepth?token=dfyn')
+      const res_uniswaprouteethv2= await axios('http://34.93.102.172:8000/uniswapdata?token=routeethv2')
+      const res_uniswaprouteethv3= await axios('http://34.93.102.172:8000/uniswapdata?token=routeethv3')
+      const res_uniswaprouteusdcv2= await axios('http://34.93.102.172:8000/uniswapdata?token=routeusdcv2')
+      const res_dfynrouteeth= await axios('http://34.93.102.172:8000/dfyndata?token=routeeth')
+      const res_dfynrouteusdc= await axios('http://34.93.102.172:8000/dfyndata?token=routeusdc')
       console.log(res_kukoin2.data)
     
     

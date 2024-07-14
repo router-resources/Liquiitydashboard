@@ -248,7 +248,7 @@ function CH({token}) {
 
     useEffect(() => {
       const fetchData = async () => {
-        const dataFromFireBase = await axios('http://localhost:8000/read');
+        const dataFromFireBase = await axios('http://34.93.102.172:8000/read');
 
         const sortedData = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
         const dataFromFireBase1 = sortedData.map(item => ({
@@ -259,7 +259,7 @@ function CH({token}) {
         }));
         setData(dataFromFireBase1);
 
-        const dataFromFireBase_dex_route = await axios('http://localhost:8000/read_dex_route');
+        const dataFromFireBase_dex_route = await axios('http://34.93.102.172:8000/read_dex_route');
 
         const sortedData_dex_route = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
     
@@ -452,7 +452,7 @@ function CH({token}) {
         
 
         const fetchData=async ()=>{
-            const dataFromFireBase = await axios('http://localhost:8000/read')
+            const dataFromFireBase = await axios('http://34.93.102.172:8000/read')
             const dataFromFireBase1=dataFromFireBase.data.map(item => ({
                 time: item.time,
                 volume: item.exchange.map(ex => parseFloat(ex.volume)),
