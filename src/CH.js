@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function CH({token}) {
 
     const [parameter,setParameter]=useState('VOLUME')
-    const [month,setMonth]=useState('Jun')
+    const [month,setMonth]=useState('Jul')
 
   
   
@@ -117,6 +117,43 @@ function CH({token}) {
         ["19 May 2024", 21.45, "green"],
       ]);
 
+      const [TV_DATA_UNISWAP2ROUTEETH,setTV_DATA_UNISWAP2ROUTEETH] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+
+      const [TV_DATA_UNISWAP2ROUTEUSDC,setTV_DATA_UNISWAP2ROUTEUSDC] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+      const [TV_DATA_UNISWAP3ROUTEETH,setTV_DATA_UNISWAP3ROUTEETH] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+      const [TV_DATA_DFYNROUTEETH,setTV_DATA_DFYNROUTEETH] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+      const [TV_DATA_DFYNROUTEUSDC,setTV_DATA_DFYNROUTEUSDC] = useState([
+        ["CEX", "24h Trading Volume", { role: "style" }],
+        ["19 May 2024", 8.94, "#b87333"], // RGB value
+        ["19 May 2024", 10.49, "silver"], // English color name,
+        ["19 May 2024", 21.45, "color: #e5e4e2"], // CSS-style declaration
+        ["19 May 2024", 21.45, "green"],
+      ])
+
       const [SPREAD_DATA_BYBIT,setSPREAD_DATA_BYBIT] = useState([
         ["CEX", "24h Trading Volume", { role: "style" }],
         ["19 May 2024", 8.94, "#b87333"], // RGB value
@@ -221,6 +258,10 @@ function CH({token}) {
           depth: item.exchange.map(ex => ex.depth)
         }));
         setData(dataFromFireBase1);
+
+        const dataFromFireBase_dex_route = await axios('http://localhost:8000/read_dex_route');
+
+        const sortedData_dex_route = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
     
         const getRandomColor = () => {
           const letters = '0123456789ABCDEF';
@@ -266,6 +307,24 @@ function CH({token}) {
           dataArray.unshift(header); // Add header at the beginning of the array
           return dataArray;
         };
+
+        const createVolumeDataArray_dex_route = (exchangeName,month1) => {
+          const header = ["Dex", "24h Trading Volume", { role: "style" }];
+          const dataArray = dataFromFireBase_dex_route.data.reduce((acc, curr) => {
+
+            curr.exchange.forEach(exch => {
+
+              console.log("time",curr.time.substring(0, 3),month1)
+              if (exch.name === exchangeName && curr.time.substring(0, 3)==month1) {
+                acc.push([curr.time, parseFloat(exch.volume), getRandomColor()]);
+              }
+            });
+            return acc;
+          }, []);
+          dataArray.unshift(header); // Add header at the beginning of the array
+          return dataArray;
+        };
+
         const createSpreadDataArray = (exchangeName) => {
           const header = ["CEX", "Spread", { role: "style" }];
           const dataArray = dataFromFireBase.data.reduce((acc, curr) => {
@@ -329,6 +388,12 @@ function CH({token}) {
         const Gate_data_volume = createVolumeDataArray("Gate",month);
         const Total_data_volume=createTotalVolumeDataArray()
 
+        const Uniswapv2routeeth_data_volume=createVolumeDataArray_dex_route("Uniswapv2routeeth",month)
+        const Uniswapv2routeusdc_data_volume=createVolumeDataArray_dex_route("Uniswapv2routeusdc",month)
+        const Uniswapv3routeeth_data_volume=createVolumeDataArray_dex_route("Uniswapv3routeeth",month)
+        const Dfynrouteeth_data_volume=createVolumeDataArray_dex_route("Dfyn_routeeth",month)
+        const Dfynrouteusdc_data_volume=createVolumeDataArray_dex_route("Dfyn_routeusdc",month)
+
         const Bybit_data_spread=createSpreadDataArray("Bybit")
         const Kucoin_data_spread = createSpreadDataArray("Kucoin");
         const Mexc_data_spread = createSpreadDataArray("Mexc");
@@ -348,6 +413,12 @@ function CH({token}) {
         setTV_DATA_MEXC(Mexc_data_volume)
         setTV_DATA_ASD(Ascendex_data_volume)
         setTV_DATA_GATE(Gate_data_volume)
+
+        setTV_DATA_UNISWAP2ROUTEETH(Uniswapv2routeeth_data_volume)
+        setTV_DATA_UNISWAP2ROUTEUSDC(Uniswapv2routeusdc_data_volume)
+        setTV_DATA_UNISWAP3ROUTEETH(Uniswapv3routeeth_data_volume)
+        setTV_DATA_DFYNROUTEETH(Dfynrouteeth_data_volume)
+        setTV_DATA_DFYNROUTEUSDC(Dfynrouteusdc_data_volume)
 
         setSPREAD_DATA_BYBIT(Bybit_data_spread)
         setSPREAD_DATA_KUCOIN(Kucoin_data_spread)
@@ -520,6 +591,40 @@ function CH({token}) {
 <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_GATE} options={options} />
 <b>GATE</b>
                 <br></br>
+
+                <hr></hr>
+              
+
+<Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_UNISWAP2ROUTEETH} options={options} />
+<b>Uniswap V2 ROUTE-ETH</b>
+    <br></br>
+
+    <hr></hr>
+              
+
+              <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_UNISWAP2ROUTEUSDC} options={options} />
+              <b>Uniswap V2 ROUTE-USDC</b>
+                              <br></br>
+
+                              <hr></hr>
+              
+
+              <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_UNISWAP3ROUTEETH} options={options} />
+              <b>Uniswap V3 ROUTE-ETH</b>
+                              <br></br>
+
+                              <hr></hr>
+              
+
+              <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_DFYNROUTEETH} options={options} />
+              <b>DFYN ROUTE-ETH</b>
+                              <br></br>
+                              <hr></hr>
+              
+
+              <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_DFYNROUTEUSDC} options={options} />
+              <b>DFYN ROUTE-USDC</b>
+                              <br></br>
 
 </div>}
 
