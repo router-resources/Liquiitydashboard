@@ -45,10 +45,15 @@ function HomePage({token}) {
   const [TOTAL_VOLUME_ROUTE,setTOTAL_VOLUME_ROUTE]=useState(0)
   const [TOTAL_VOLUME_DFYN,setTOTAL_VOLUME_DFYN]=useState(0)
   const [TV_UNISWAP_ROUTEETHV2,setTV_UNISWAP_ROUTEETHV2]=useState(0)
+  const [DEPTH_UNISWAP_ROUTEETHV2,setDEPTH_UNISWAP_ROUTEETHV2]=useState({})
   const [TV_UNISWAP_ROUTEETHV3,setTV_UNISWAP_ROUTEETHV3]=useState(0)
+  const [DEPTH_UNISWAP_ROUTEUSDCV2,setDEPTH_UNISWAP_ROUTEUSDCV2]=useState({})
   const [TV_UNISWAP_ROUTEUSDCV2,setTV_UNISWAP_ROUTEUSDCV2]=useState(0)
+  const [DEPTH_UNISWAP_ROUTEETHV3,setDEPTH_UNISWAP_ROUTEETHV3]=useState({})
   const [TV_DFYN_ROUTEETH,setTV_DFYN_ROUTEETH]=useState(0)
+  const [DEPTH_DFYN_ROUTEUSDC,setDEPTH_DFYN_ROUTEUSDC]=useState({})
   const [TV_DFYN_ROUTEUSDC,setTV_DFYN_ROUTEUSDC]=useState(0)
+  const [DEPTH_DFYN_ROUTEETH,setDEPTH_DFYN_ROUTEETH]=useState({})
   const [TOTAL_VOLUME_ROUTE_DEX,setTOTAL_VOLUME_ROUTE_DEX]=useState(0)
 
 
@@ -133,7 +138,21 @@ function HomePage({token}) {
       ["DFYN ROUTE-USDC", 21.45, "color: #e5e4e2"], // CSS-style declaration
      
     ]);
-    
+    const [DEPTH_DATA_UNISWAP,setDEPTH_DATA_UNISWAP] = useState([
+      [
+        "Depth",
+        "Kucoin",
+        "MEXC",
+       
+        "GATE"
+       
+      ],
+      [0.3, 37.8, 80.8, 41.8],
+      [0.5, 30.9, 69.5, 32.4],
+      [1, 25.4, 57, 25.7,0],
+      
+    ]);
+
       const options = {
             chartArea: {
                   backgroundColor: 'white',
@@ -173,6 +192,11 @@ function HomePage({token}) {
       const res_uniswaprouteusdcv2= await axios('http://34.93.102.172:8000/uniswapdata?token=routeusdcv2')
       const res_dfynrouteeth= await axios('http://34.93.102.172:8000/dfyndata?token=routeeth')
       const res_dfynrouteusdc= await axios('http://34.93.102.172:8000/dfyndata?token=routeusdc')
+      const res_uniswaprouteethv2_depth=await axios('http://localhost:8000/uniswapv2eth_data_route_depth')
+      const res_uniswaprouteusdcv2_depth=await axios('http://localhost:8000/uniswapv2usdc_data_route_depth')
+      const res_uniswaprouteethv3_depth=await axios('http://localhost:8000/uniswapv3eth_data_route_depth')
+      const res_dfynrouteeth_depth=await axios('http://localhost:8000/dfyneth_data_route_depth')
+      const res_dfynrouteusdc_depth=await axios('http://localhost:8000/dfynusdc_data_route_depth')
       console.log(res_kukoin2.data)
     
     
@@ -280,6 +304,14 @@ function HomePage({token}) {
           setTV_UNISWAP_ROUTEUSDCV2(parseFloat(res_uniswaprouteusdcv2.data.data.attributes.volume_usd.h24).toFixed(2))
           setTV_DFYN_ROUTEETH(parseFloat(res_dfynrouteeth.data.data.attributes.volume_usd.h24).toFixed(2))
           setTV_DFYN_ROUTEUSDC(parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24).toFixed(2))
+          setDEPTH_UNISWAP_ROUTEETHV2(res_uniswaprouteethv2_depth.data)
+          setDEPTH_UNISWAP_ROUTEUSDCV2(res_uniswaprouteusdcv2_depth.data)
+          setDEPTH_UNISWAP_ROUTEETHV3(res_uniswaprouteethv3_depth.data)
+          setDEPTH_DFYN_ROUTEETH(res_dfynrouteeth_depth.data)
+          setDEPTH_DFYN_ROUTEUSDC(res_dfynrouteusdc_depth.data)
+
+
+
 
           setTOTAL_VOLUME_ROUTE_DEX(parseFloat(res_uniswaprouteethv2.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_uniswaprouteethv3.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_uniswaprouteusdcv2.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_dfynrouteeth.data.data.attributes.volume_usd.h24).toFixed(2)+parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24).toFixed(2))
 
@@ -292,6 +324,24 @@ function HomePage({token}) {
             ["DFYN ROUTE-USDC",parseFloat(res_dfynrouteusdc.data.data.attributes.volume_usd.h24), "color: #e5e4e2"], // CSS-style declaration
           
 
+          ])
+
+          setDEPTH_DATA_UNISWAP([
+            [
+              "Depth",
+              "Uniswap v2 Route-Eth",
+              "Uniswap v2 Route-USDC",
+              "Uniswap v3 Route-Eth",
+              "Dfyn Route-Eth",
+              "Dfyn Route-USDC"
+              
+            ],
+            [0.3,res_uniswaprouteethv2_depth.data["0.3%"],res_uniswaprouteusdcv2_depth.data["0.3%"],res_uniswaprouteethv3_depth.data["0.3%"],res_dfynrouteeth_depth.data["0.3%"],res_dfynrouteusdc_depth.data["0.3%"]],
+
+            [0.5,res_uniswaprouteethv2_depth.data["0.5%"],res_uniswaprouteusdcv2_depth.data["0.5%"],res_uniswaprouteethv3_depth.data["0.5%"],res_dfynrouteeth_depth.data["0.5%"],res_dfynrouteusdc_depth.data["0.5%"]],
+
+            [1, res_uniswaprouteethv2_depth.data["1%"],res_uniswaprouteusdcv2_depth.data["1%"],res_uniswaprouteethv3_depth.data["1%"],res_dfynrouteeth_depth.data["1%"],res_dfynrouteusdc_depth.data["1%"]]
+            
           ])
          
     }
@@ -488,6 +538,7 @@ function HomePage({token}) {
 
         <hr></hr>
 
+
         <h2>Depth <l style={{ fontSize: '18px', verticalAlign: 'super',cursor: 'pointer'}} onMouseEnter={() => setShowTextDepth(true)}
         onMouseLeave={() => setShowTextDepth(false)}>&#x24D8;</l></h2>
         <br></br>
@@ -514,6 +565,8 @@ function HomePage({token}) {
           </p>
         </div>
       )}
+      <h3>CEX</h3>
+      <br></br>
         <Chart
               chartType="Line"
               width="100%"
@@ -573,6 +626,73 @@ function HomePage({token}) {
         <td style={{ borderRight: '1px solid black' }}>0</td>
         <td>{DEPTH_GATE_ROUTE["0.5%"].toFixed(2)}</td>
 
+        </tr>
+        </table>
+        <br></br>
+     
+     <br></br>
+
+  
+     <br></br>
+        <h3>DEX</h3>
+      <br></br>
+        <Chart
+              chartType="Line"
+              width="100%"
+              height="400px"
+              data={DEPTH_DATA_UNISWAP}
+              options={options}
+            />
+            <br></br>
+
+            <table>
+
+              <tr>
+              <th>%</th>
+              <th>Depth</th>
+
+              </tr>
+
+            </table>
+
+        <br></br>
+        <table style={{ border: '1px solid black' }}>
+              <tr>  <th style={{ borderRight: '1px solid black' }}>%</th>
+              <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Uniswap v2 Route-Eth</th>
+              <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Uniswap v2 Route-USDC</th>
+              <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black' }}>Uniswap v3 Route-Eth</th>
+              <th style={{ borderRight: '1px solid black', borderBottom: '1px solid black'}}>Dfyn Route-Eth</th>
+              <th style={{ borderRight: '1px solid black' , borderBottom: '1px solid black'}}>Dfyn Route-USDC</th>
+            
+              
+              </tr>
+            
+        <tr>
+        <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV2["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEUSDCV2["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV3["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEETH["0.3%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEUSDC["0.3%"].toFixed(2)}</td>
+       
+        </tr>
+        <tr>
+      
+        <td style={{ borderRight: '1px solid black' }}> 0.5%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV2["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEUSDCV2["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV3["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEETH["0.5%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEUSDC["0.5%"].toFixed(2)}</td>
+
+        </tr>
+        <tr>
+        <td style={{ borderRight: '1px solid black' }}> 0.3%</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV2["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEUSDCV2["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_UNISWAP_ROUTEETHV3["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEETH["1%"].toFixed(2)}</td>
+        <td style={{ borderRight: '1px solid black' }}>{DEPTH_DFYN_ROUTEUSDC["1%"].toFixed(2)}</td>
         </tr>
         </table>
 

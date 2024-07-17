@@ -243,6 +243,54 @@ function CH({token}) {
       [1, 25.4, 57, 25.7]])
 
  
+      const [DEPTH_DATA_UNISWAPV2ETH,setDEPTH_DATA_UNISWAPV2ETH] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
+      const [DEPTH_DATA_UNISWAPV2USDC,setDEPTH_DATA_UNISWAPV2USDC] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
+
+      const [DEPTH_DATA_UNISWAPV3ETH,setDEPTH_DATA_UNISWAPV3ETH] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
+
+      const [DEPTH_DATA_DFYNETH,setDEPTH_DATA_DFYNETH] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
+
+      const [DEPTH_DATA_DFYNUSDC,setDEPTH_DATA_DFYNUSDC] =useState([[
+        "Day",
+        "19 May 2024",
+        "20 May 2024",
+        "21 May 2024",
+      ],
+      [0.3, 305.56399956,  337.82230711, 365.82230711],
+      [0.5, 573.24091316,4054.76031, 3054.76031],
+      [1, 25.4, 57, 25.7]])
 
 
 
@@ -261,7 +309,11 @@ function CH({token}) {
 
         const dataFromFireBase_dex_route = await axios('http://34.93.102.172:8000/read_dex_route');
 
-        const sortedData_dex_route = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
+        const sortedData_dex_route = await (async () => dataFromFireBase_dex_route.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
+
+        const dataFromFireBase_dex_route_depth = await axios('http://localhost:8000/dexdepth');
+
+        const sortedData_dex_route_depth = await (async () => dataFromFireBase_dex_route_depth.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
     
         const getRandomColor = () => {
           const letters = '0123456789ABCDEF';
@@ -380,6 +432,47 @@ function CH({token}) {
           return result;
         };
 
+        const createDepthDexDataArray = (exchangeName) => {
+          const depthPercentages = ["0.3%", "0.5%", "1%"];
+          const header = [""];
+          const depthData = {
+            "0.3%": [0.3],
+            "0.5%": [0.5],
+            "1%": [1]
+          };
+        
+          for (let i = 0; i < dataFromFireBase_dex_route_depth.data.length; i++) {
+            const curr = dataFromFireBase_dex_route_depth.data[i];
+
+            if(curr.time.substring(0,3)==month)
+              {
+                header.push(curr.time);
+          
+                for (let j = 0; j < curr.exchange.length  ; j++) {
+                  const exch = curr.exchange[j];
+                 
+                  if (exch.name === exchangeName ) {
+                    for (let k = 0; k < depthPercentages.length; k++) {
+                      const percentage = depthPercentages[k];
+                      depthData[percentage].push(exch.depth[percentage] || 0);
+                    }
+                  }
+                }
+              }
+              }
+           
+
+         
+
+        
+          const result = [header];
+          for (let i = 0; i < depthPercentages.length; i++) {
+            const percentage = depthPercentages[i];
+            result.push(depthData[percentage]);
+          }
+        console.log(result)
+          return result;
+        };
 
         const Bybit_data_volume=createVolumeDataArray("Bybit",month)
         const Kucoin_data_volume = createVolumeDataArray("Kucoin",month);
@@ -405,6 +498,12 @@ function CH({token}) {
         const Mexc_data_depth = createDepthDataArray("Mexc");
         const Ascendex_data_depth = createDepthDataArray("Ascendex");
         const Gate_data_depth = createDepthDataArray("Gate");
+
+        const uniswapv2eth_data_depth=createDepthDexDataArray("Uniswapv2routeeth")
+        const uniswapv2usdc_data_depth=createDepthDexDataArray("Uniswapv2routeusdc")
+        const uniswapv3eth_data_depth=createDepthDexDataArray("Uniswapv3routeeth")
+        const dfyneth_data_depth=createDepthDexDataArray("dfynrouteeth")
+        const dfynusdc_data_depth=createDepthDexDataArray("dfynrouteusdc")
 
 
         setTV_DATA_TOTAL(Total_data_volume)
@@ -432,6 +531,11 @@ function CH({token}) {
         setDEPTH_DATA_ASD(Ascendex_data_depth)
         setDEPTH_DATA_GATE(Gate_data_depth)
 
+        setDEPTH_DATA_UNISWAPV2ETH(uniswapv2eth_data_depth)
+        setDEPTH_DATA_UNISWAPV2USDC(uniswapv2usdc_data_depth)
+        setDEPTH_DATA_UNISWAPV3ETH(uniswapv3eth_data_depth)
+        setDEPTH_DATA_DFYNETH(dfyneth_data_depth)
+        setDEPTH_DATA_DFYNUSDC(dfynusdc_data_depth)
        
         console.log('Bybit_data_depth:', Bybit_data_depth);
         console.log('Kucoin_data_depth:', Kucoin_data_depth);
@@ -691,6 +795,37 @@ function CH({token}) {
 <Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_GATE} options={options} />
 <br></br><br></br><br></br>
                 <b>GATE</b>
+                <hr></hr>
+
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_UNISWAPV2ETH} options={options} />
+<br></br><br></br><br></br>
+                <b>Uniswap V2 Route-Eth</b>
+                <hr></hr>
+
+                <hr></hr>
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_UNISWAPV2USDC} options={options} />
+<br></br><br></br><br></br>
+                <b>Uniswap V2 Route-USDC</b>
+                <hr></hr>
+                <hr></hr>
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_UNISWAPV3ETH} options={options} />
+<br></br><br></br><br></br>
+                <b>Uniswap V3 Route-Eth</b>
+                <hr></hr>
+                <hr></hr>
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_DFYNETH} options={options} />
+<br></br><br></br><br></br>
+                <b>Dfyn Route-Eth</b>
+                <hr></hr>
+                <hr></hr>
+
+<Chart chartType="Line" width="100%" height="400px" data={DEPTH_DATA_DFYNUSDC} options={options} />
+<br></br><br></br><br></br>
+                <b>Dfyn Route-USDC</b>
                 <hr></hr>
 
 <br></br></div>}
