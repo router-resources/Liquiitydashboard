@@ -296,7 +296,7 @@ function CH({token}) {
 
     useEffect(() => {
       const fetchData = async () => {
-        const dataFromFireBase = await axios('http://34.93.102.172:8000/read');
+        const dataFromFireBase = await axios('http://34.47.164.182:8000/read');
 
         const sortedData = await (async () => dataFromFireBase.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
         const dataFromFireBase1 = sortedData.map(item => ({
@@ -307,11 +307,11 @@ function CH({token}) {
         }));
         setData(dataFromFireBase1);
 
-        const dataFromFireBase_dex_route = await axios('http://34.93.102.172:8000/read_dex_route');
+        const dataFromFireBase_dex_route = await axios('http://34.47.164.182:8000/read_dex_route');
 
         const sortedData_dex_route = await (async () => dataFromFireBase_dex_route.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
 
-        const dataFromFireBase_dex_route_depth = await axios('http://localhost:8000/dexdepth');
+        const dataFromFireBase_dex_route_depth = await axios('http://34.47.164.182:8000/dexdepth');
 
         const sortedData_dex_route_depth = await (async () => dataFromFireBase_dex_route_depth.data.sort((a, b) => new Date(a.time) - new Date(b.time)))();
     
@@ -556,7 +556,7 @@ function CH({token}) {
         
 
         const fetchData=async ()=>{
-            const dataFromFireBase = await axios('http://34.93.102.172:8000/read')
+            const dataFromFireBase = await axios('http://34.47.164.182:3000:8000/read')
             const dataFromFireBase1=dataFromFireBase.data.map(item => ({
                 time: item.time,
                 volume: item.exchange.map(ex => parseFloat(ex.volume)),
@@ -712,12 +712,12 @@ function CH({token}) {
 
                               <hr></hr>
               
-
+{/* 
               <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_UNISWAP3ROUTEETH} options={options} />
               <b>Uniswap V3 ROUTE-ETH</b>
                               <br></br>
 
-                              <hr></hr>
+                              <hr></hr> */}
               
 
               <Chart chartType="ColumnChart" width="100%" height="400px" data={TV_DATA_DFYNROUTEETH} options={options} />
